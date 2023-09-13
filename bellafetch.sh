@@ -38,7 +38,7 @@ clear
 
 	printf '%s\n' "
           bellafetch
-     [Github: madison-isa]
+     [Github: x3-madison]
 
    host   :: ${HOST}
    os     :: ${PRETTY_NAME}
