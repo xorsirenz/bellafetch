@@ -40,15 +40,15 @@ clear
           bellafetch
      [Github: x3-madison]
 
-   host   :: ${HOST}
-   os     :: ${PRETTY_NAME}
+   host   :: ${HOST}
+   os     :: ${PRETTY_NAME}
    ver    :: ${kernel}
-   uptime :: ${uptime}
+   uptime :: ${uptime}
    pkgs   :: ${pkg_total}
    wm     :: ${wm}
    cpu    :: ${cpu}
-   gpu    :: ${gpu}
-   mem    :: ${mem}
+   gpu    :: ${gpu}
+   mem    :: ${mem}
 "
 
 exit 0
