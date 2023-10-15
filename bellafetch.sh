@@ -17,7 +17,9 @@ kernel=${version%%-*}
 uptime=$(uptime -p |cut -d' ' -f2-)
 
 ## packages 
-pkg_total=$(pacman -Q |wc -l)
+pkg_total=$(dpkg-query -l 2>/dev/null | grep "^ii")
+pkg_total=$(yum list installed 2>/dev/null)
+pkg_total=$(pacman -Q 2>/dev/null |wc -l)
 
 ## wm detection
 id=$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)
