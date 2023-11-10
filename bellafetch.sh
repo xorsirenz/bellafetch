@@ -35,22 +35,26 @@ cpu=$(grep -Po 'model name.*: \K.*' /proc/cpuinfo | uniq | sed -E 's/\([^)]+\)//
 ## gpu
 gpu=$(lspci |grep -i vga |cut -d' ' -f5-9)
 
+## storage
+storage=$(df -Ph . | tail -1 | awk '{print $4"iB / "$2"iB"}')
+
 ## output
 clear
 
 	printf '%s\n' "
-          bellafetch
-     [Github: bootlegwifi]
+           bellafetch
+      [Github: bootlegwifi]
 
-   host   :: ${HOST}
-   os     :: ${PRETTY_NAME}
-   ver    :: ${kernel}
-   uptime :: ${uptime}
-   pkgs   :: ${pkg_total}
-   wm     :: ${wm}
-   cpu    :: ${cpu}
-   gpu    :: ${gpu}
-   mem    :: ${mem}
+   host    :: ${HOST}
+   os      :: ${PRETTY_NAME}
+   ver     :: ${kernel}
+   uptime  :: ${uptime}
+   pkgs    :: ${pkg_total}
+   wm      :: ${wm}
+   cpu     :: ${cpu}
+   gpu     :: ${gpu}
+   storage :: ${storage}
+   mem     :: ${mem}
 "
 
 exit 0
