@@ -43,7 +43,7 @@ clear
 
 	printf '%s\n' "
            bellafetch
-      [Github: bootlegwifi]
+      [Github: xorsirenz]
 
    host    :: ${HOST}
    os      :: ${PRETTY_NAME}
