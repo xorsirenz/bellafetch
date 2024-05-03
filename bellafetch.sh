@@ -1,8 +1,5 @@
 #!/bin/sh
 
-## system infomration tool
-## created by madison
-
 ## hostname
 HOST=$USER@$HOSTNAME
 
