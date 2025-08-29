@@ -64,7 +64,7 @@ func kernel() string {
 	for scanner.Scan() {
 		kernel_info := scanner.Text()
 		kernel_lines := strings.Split(kernel_info, " ")
-		rgx := regexp.MustCompile(`^(\d+\.)(\d+\.)(\*|\d+)`)
+		rgx := regexp.MustCompile(`^(\d+\.)(\d+\.)(\d+)`)
 		kernel_version = rgx.FindString(kernel_lines[2])
 	}
 	return kernel_version
