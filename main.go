@@ -18,15 +18,16 @@ func username() string {
 	return current_user.Username
 }
 
-func hostname() []byte {
+func hostname() string {
 	hostname_file, err := os.ReadFile("/etc/hostname")
 	if err != nil {
 		fmt.Println("error:", err)
 		os.Exit(-1)
 	}
 
-	hostname := hostname_file
-	return hostname
+	hostname := string(hostname_file)
+	host := strings.TrimSuffix(hostname, "\n")
+	return host
 }
 
 func distro() string {
@@ -72,7 +73,7 @@ func kernel() string {
 func main(){
 	fmt.Println("	bellafetch")
 	fmt.Println("  [github : xorsirenz]\n")
-	fmt.Printf("  host    :: %s@%s", username(), hostname())
+	fmt.Println("  host    ::", username() + "@" + hostname())
 	fmt.Println("  os	   ::", distro())
 	fmt.Println("  ver	   ::", kernel())
 	fmt.Println("  uptime  ::",) 
