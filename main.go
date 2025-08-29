@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"os/user"
 	"regexp"
 	"strings"
@@ -70,6 +71,18 @@ func kernel() string {
 	return kernel_version
 }
 
+func packages() int {
+	out, err:= exec.Command("pacman", "-Q").Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	output := string(out)
+	output_lines := strings.Split(output, "\n")
+	lines := len(output_lines) -1
+	return lines
+}
+
 func main(){
 	fmt.Println("	bellafetch")
 	fmt.Println("  [github : xorsirenz]\n")
@@ -77,7 +90,7 @@ func main(){
 	fmt.Println("  os	   ::", distro())
 	fmt.Println("  ver	   ::", kernel())
 	fmt.Println("  uptime  ::",) 
-	fmt.Println("  pkgs    ::",)
+	fmt.Println("  pkgs    ::", packages())
 	fmt.Println("  wm      ::",) 
 	fmt.Println("  cpu     ::",) 
 	fmt.Println("  gpu     ::",) 
