@@ -92,6 +92,7 @@ func packages() int {
 
 func main(){
 	clearScreen()
+	fmt.Println("")
 	fmt.Println("	bellafetch")
 	fmt.Println("  [github : xorsirenz]")
 	fmt.Println("")
