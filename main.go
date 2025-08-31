@@ -45,7 +45,8 @@ func distro() string {
 	for scanner.Scan() {
 		if strings.Contains(scanner.Text(), "PRETTY_NAME") {
 			prettyInfo := scanner.Text()
-			prettyName = prettyInfo[13 : len(prettyInfo)-1]
+			kv := strings.Split(prettyInfo, "=")
+			prettyName = strings.Trim(kv[1], "\"")
 		}
 	}
 	return prettyName
