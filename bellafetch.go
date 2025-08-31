@@ -10,6 +10,11 @@ import (
 	"strings"
 )
 
+func clearScreen() {
+	clear, _ := exec.Command("clear").Output()
+	os.Stdout.Write(clear)
+}
+
 func username() string {
 	currentUser, err := user.Current()
 	if err != nil {
@@ -84,9 +89,12 @@ func packages() int {
 	return lines
 }
 
+
 func main(){
+	clearScreen()
 	fmt.Println("	bellafetch")
-	fmt.Println("  [github : xorsirenz]\n")
+	fmt.Println("  [github : xorsirenz]")
+	fmt.Println("")
 	fmt.Println("  host    ::", username() + "@" + hostname())
 	fmt.Println("  os	   ::", distro())
 	fmt.Println("  ver	   ::", kernel())
