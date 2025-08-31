@@ -6,7 +6,7 @@ else
   exit 1
 fi
 
-if cp ./bellafetch.sh /usr/bin/bellafetch; then
+if cp ./bellafetch.sh /usr/local/bin/bellafetch; then
   echo "Successfully installed!"
   exit 0 
 else 
