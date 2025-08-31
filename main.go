@@ -11,64 +11,64 @@ import (
 )
 
 func username() string {
-	current_user, err := user.Current()
+	currentUser, err := user.Current()
 	if err != nil {
 		fmt.Println("error:", err)
 		os.Exit(-1)
 	}
-	return current_user.Username
+	return currentUser.Username
 }
 
 func hostname() string {
-	hostname_file, err := os.ReadFile("/etc/hostname")
+	hostnameFile, err := os.ReadFile("/etc/hostname")
 	if err != nil {
 		fmt.Println("error:", err)
 		os.Exit(-1)
 	}
 
-	hostname := string(hostname_file)
+	hostname := string(hostnameFile)
 	host := strings.TrimSuffix(hostname, "\n")
 	return host
 }
 
 func distro() string {
-	os_file, err := os.Open("/etc/os-release")
+	osFile, err := os.Open("/etc/os-release")
 	if err != nil {
 		fmt.Println("error:", err)
 		os.Exit(-1)
 	}
-	defer os_file.Close()
+	defer osFile.Close()
 	
-	pretty_name := ""
-	scanner := bufio.NewScanner(os_file)
+	prettyName := ""
+	scanner := bufio.NewScanner(osFile)
 
 	for scanner.Scan() {
 		if strings.Contains(scanner.Text(), "PRETTY_NAME") {
-			pretty_info := scanner.Text()
-			pretty_name = pretty_info[13 : len(pretty_info)-1]
+			prettyInfo := scanner.Text()
+			prettyName = prettyInfo[13 : len(prettyInfo)-1]
 		}
 	}
-	return pretty_name
+	return prettyName
 }
 
 func kernel() string {
-	kernel_file, err := os.Open("/proc/version")
+	kernelFile, err := os.Open("/proc/version")
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
 	}
-	defer kernel_file.Close()
+	defer kernelFile.Close()
 
-	kernel_version := ""
-	scanner := bufio.NewScanner(kernel_file)
+	kernelVersion := ""
+	scanner := bufio.NewScanner(kernelFile)
 
 	for scanner.Scan() {
-		kernel_info := scanner.Text()
-		kernel_lines := strings.Split(kernel_info, " ")
+		kernelInfo := scanner.Text()
+		kernelLines := strings.Split(kernelInfo, " ")
 		rgx := regexp.MustCompile(`^(\d+\.)(\d+\.)(\d+)`)
-		kernel_version = rgx.FindString(kernel_lines[2])
+		kernelVersion = rgx.FindString(kernelLines[2])
 	}
-	return kernel_version
+	return kernelVersion
 }
 
 func packages() int {
@@ -78,8 +78,8 @@ func packages() int {
 	}
 
 	output := string(out)
-	output_lines := strings.Split(output, "\n")
-	lines := len(output_lines) -1
+	outputLines := strings.Split(output, "\n")
+	lines := len(outputLines) -1
 	return lines
 }
 
