@@ -7,12 +7,22 @@ import (
 	"os/exec"
 	"os/user"
 	"regexp"
+	"runtime"
+	"strconv"
 	"strings"
+	"time"
 )
 
 func clearScreen() {
 	clear, _ := exec.Command("clear").Output()
 	os.Stdout.Write(clear)
+}
+
+func checkOS() {
+	if runtime.GOOS != "linux" {
+		fmt.Println("bellafetch is only capitable with Linux right now..")
+		os.Exit(-1)
+	}
 }
 
 func username() string {
@@ -89,8 +99,35 @@ func packages() int {
 	return lines
 }
 
+func uptime() string {
+    data, err := os.ReadFile("/proc/uptime")
+    if err != nil {
+		fmt.Println(err)
+    }
+
+    fields := strings.Fields(string(data))
+    if len(fields) < 1 {
+		fmt.Println(err)
+    }
+
+    seconds, err := strconv.ParseFloat(fields[0], 64)
+    if err != nil {
+		fmt.Println(err)
+    }
+
+	realtime := time.Duration(seconds) * time.Second
+
+	days := int(realtime.Hours() / 24)
+	hours := int(realtime.Hours()) % 24
+	minutes := int(realtime.Minutes()) % 60
+	return fmt.Sprintf("%dd %02dh %02dm", days, hours, minutes)
+
+}
+
+
 
 func main(){
+	checkOS()
 	clearScreen()
 	fmt.Println("")
 	fmt.Println("	bellafetch")
@@ -99,7 +136,7 @@ func main(){
 	fmt.Println("  host    ::", username() + "@" + hostname())
 	fmt.Println("  os	   ::", distro())
 	fmt.Println("  ver	   ::", kernel())
-	fmt.Println("  uptime  ::",) 
+	fmt.Println("  uptime  ::",uptime()) 
 	fmt.Println("  pkgs    ::", packages())
 	fmt.Println("  wm      ::",) 
 	fmt.Println("  cpu     ::",) 
