@@ -124,7 +124,29 @@ func uptime() string {
 
 }
 
+func cpu() string {
+	cpuinfoFile, err := os.Open("/proc/cpuinfo")
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(-1)
+	}
+	defer cpuinfoFile.Close()
 
+	cpuVersion := ""
+	scanner := bufio.NewScanner(cpuinfoFile)
+
+	for scanner.Scan() {
+		cpuInfo := scanner.Text()
+		if strings.HasPrefix(cpuInfo, "model name") {
+			cpu := strings.SplitN(cpuInfo, ":", 2)
+			if len(cpu) == 2 {
+				cpuVersion := strings.TrimSpace(cpu[1])
+				return cpuVersion
+			}
+		}
+	}
+	return cpuVersion
+}
 
 func main(){
 	checkOS()
@@ -139,7 +161,7 @@ func main(){
 	fmt.Println("  uptime  ::",uptime()) 
 	fmt.Println("  pkgs    ::", packages())
 	fmt.Println("  wm      ::",) 
-	fmt.Println("  cpu     ::",) 
+	fmt.Println("  cpu     ::",cpu()) 
 	fmt.Println("  gpu     ::",) 
 	fmt.Println("  storage ::",) 
 	fmt.Println("  mem    ::",) 
