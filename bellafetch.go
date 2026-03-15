@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"os/user"
@@ -25,6 +26,20 @@ func checkOS() {
 	}
 }
 
+func openFile(filename string) (string, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	data, err := io.ReadAll(file)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
+}
+
 func username() string {
 	currentUser, err := user.Current()
 	if err != nil {
@@ -35,27 +50,27 @@ func username() string {
 }
 
 func hostname() string {
-	hostnameFile, err := os.ReadFile("/etc/hostname")
+	contents, err := openFile("/etc/hostname")
 	if err != nil {
 		fmt.Println("error:", err)
 		os.Exit(-1)
 	}
 
-	hostname := string(hostnameFile)
+	hostname := string(contents)
 	host := strings.TrimSuffix(hostname, "\n")
 	return host
 }
 
+
 func distro() string {
-	osFile, err := os.Open("/etc/os-release")
+	contents, err := openFile("/etc/os-release")
 	if err != nil {
-		fmt.Println("error:", err)
+		fmt.Println("Error:", err)
 		os.Exit(-1)
 	}
-	defer osFile.Close()
 	
 	prettyName := ""
-	scanner := bufio.NewScanner(osFile)
+	scanner := bufio.NewScanner(strings.NewReader(contents))
 
 	for scanner.Scan() {
 		if strings.Contains(scanner.Text(), "PRETTY_NAME") {
@@ -68,15 +83,14 @@ func distro() string {
 }
 
 func kernel() string {
-	kernelFile, err := os.Open("/proc/version")
+	contents, err := openFile("/proc/version")
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
 	}
-	defer kernelFile.Close()
 
 	kernelVersion := ""
-	scanner := bufio.NewScanner(kernelFile)
+	scanner := bufio.NewScanner(strings.NewReader(contents))
 
 	for scanner.Scan() {
 		kernelInfo := scanner.Text()
@@ -100,7 +114,7 @@ func packages() int {
 }
 
 func uptime() string {
-    data, err := os.ReadFile("/proc/uptime")
+    data, err := openFile("/proc/uptime")
     if err != nil {
 		fmt.Println(err)
     }
@@ -125,15 +139,14 @@ func uptime() string {
 }
 
 func cpu() string {
-	cpuinfoFile, err := os.Open("/proc/cpuinfo")
+	contents, err := openFile("/proc/cpuinfo")
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
 	}
-	defer cpuinfoFile.Close()
 
 	cpuVersion := ""
-	scanner := bufio.NewScanner(cpuinfoFile)
+	scanner := bufio.NewScanner(strings.NewReader(contents))
 
 	for scanner.Scan() {
 		cpuInfo := scanner.Text()
