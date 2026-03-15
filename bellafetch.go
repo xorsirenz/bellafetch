@@ -161,6 +161,32 @@ func cpu() string {
 	return cpuVersion
 }
 
+func memory() string {
+    contents, err:= openFile("/proc/meminfo")
+    if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(-1)
+    }
+
+    var memTotal, memAvailable uint64
+    scanner := bufio.NewScanner(strings.NewReader(contents))
+    for scanner.Scan() {
+        memInfo := scanner.Text()
+        if strings.HasPrefix(memInfo, "MemTotal:") {
+            fields := strings.Fields(memInfo)
+            memValue, _ := strconv.ParseUint(fields[1], 10, 64)
+            memTotal = memValue / 1024
+        } else if strings.HasPrefix(memInfo, "MemAvailable:") {
+            fields := strings.Fields(memInfo)
+            memValue, _ := strconv.ParseUint(fields[1], 10, 64)
+            memAvailable = memValue / 1024
+        }
+    }
+
+    memUsed := memTotal - memAvailable
+    return fmt.Sprintf("%dMib / %dMib", memUsed, memTotal)
+}
+
 func main(){
 	checkOS()
 	clearScreen()
@@ -177,5 +203,5 @@ func main(){
 	fmt.Println("  cpu     ::",cpu()) 
 	fmt.Println("  gpu     ::",) 
 	fmt.Println("  storage ::",) 
-	fmt.Println("  mem    ::",) 
+	fmt.Println("  mem    ::",memory()) 
 }
