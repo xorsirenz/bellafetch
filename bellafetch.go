@@ -41,6 +41,27 @@ func openFile(filename string) (string, error) {
 	return string(data), nil
 }
 
+func osRelease() map[string]string {
+	osReleaseFile := "/etc/os-release"
+
+	contents, err := openFile(osReleaseFile)
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(-1)
+	}
+	
+	entries := strings.Split(contents, "\n")
+	osMap := make(map[string]string)
+
+	for _, entry := range entries {
+		parts := strings.Split(entry, "=")
+		if len(parts) == 2 {
+			osMap[parts[0]] = parts[1]
+		}
+	}
+	return osMap
+}
+
 func vga() string {
     pciDir := "/sys/bus/pci/devices"
     idsFile := "/usr/share/hwdata/pci.ids"
@@ -127,26 +148,9 @@ func hostname() string {
 }
 
 
-func distro() string {
-	osReleaseFile := "/etc/os-release"
-
-	contents, err := openFile(osReleaseFile)
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(-1)
-	}
-	
-	prettyName := ""
-	scanner := bufio.NewScanner(strings.NewReader(contents))
-
-	for scanner.Scan() {
-		if strings.Contains(scanner.Text(), "PRETTY_NAME") {
-			prettyInfo := scanner.Text()
-			kv := strings.Split(prettyInfo, "=")
-			prettyName = strings.Trim(kv[1], "\"")
-		}
-	}
-	return prettyName
+func prettyName() string {
+	prettyName := osRelease()
+	return strings.Trim(prettyName["PRETTY_NAME"], "\"")
 }
 
 func kernel() string {
@@ -170,7 +174,23 @@ func kernel() string {
 	return kernelVersion
 }
 
-func packages() int {
+func detectPkgManager() int {
+	id := osRelease()
+	packageMgr := id["ID"]
+
+	switch packageMgr {
+	case "arch", "manjaro":
+		pkgs := pacman()
+		return pkgs
+	case "debian", "linuxmint", "ubuntu":
+		fmt.Println("apt not supported yet")
+	default:
+		fmt.Println("No supported package manager detected")
+	}
+	return 0
+}
+
+func pacman() int {
 	out, err:= exec.Command("pacman", "-Q").Output()
 	if err != nil {
 		fmt.Println(err)
@@ -270,14 +290,14 @@ func main(){
 	fmt.Println("  [github : xorsirenz]")
 	fmt.Println("")
 	fmt.Println("  host    ::", username() + "@" + hostname())
-	fmt.Println("  os      ::", distro())
+	fmt.Println("  os      ::", prettyName())
 	fmt.Println("  ver     ::", kernel())
-	fmt.Println("  uptime  ::",uptime()) 
-	fmt.Println("  pkgs    ::", packages())
+	fmt.Println("  uptime  ::", uptime()) 
+	fmt.Println("  pkgs    ::", detectPkgManager())
 	fmt.Println("  wm      ::",) 
-	fmt.Println("  cpu     ::",cpu()) 
-	fmt.Println("  gpu     ::",vga()) 
+	fmt.Println("  cpu     ::", cpu()) 
+	fmt.Println("  gpu     ::", vga()) 
 	fmt.Println("  storage ::",) 
-	fmt.Println(" memory  ::",memory()) 
+	fmt.Println(" memory  ::", memory()) 
 	fmt.Println("")
 }
