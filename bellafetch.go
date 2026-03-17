@@ -49,7 +49,7 @@ func osRelease() map[string]string {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
 	}
-	
+
 	entries := strings.Split(contents, "\n")
 	osMap := make(map[string]string)
 
@@ -84,7 +84,6 @@ func hostname() string {
 	host := strings.TrimSuffix(hostname, "\n")
 	return host
 }
-
 
 func prettyName() string {
 	prettyName := osRelease()
@@ -129,34 +128,34 @@ func pkgManager() int {
 }
 
 func pacman() int {
-	out, err:= exec.Command("pacman", "-Q").Output()
+	out, err := exec.Command("pacman", "-Q").Output()
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	output := string(out)
 	outputLines := strings.Split(output, "\n")
-	lines := len(outputLines) -1
+	lines := len(outputLines) - 1
 	return lines
 }
 
 func uptime() string {
 	uptimeFile := "/proc/uptime"
 
-    data, err := openFile(uptimeFile)
-    if err != nil {
+	data, err := openFile(uptimeFile)
+	if err != nil {
 		fmt.Println(err)
-    }
+	}
 
-    fields := strings.Fields(string(data))
-    if len(fields) < 1 {
+	fields := strings.Fields(string(data))
+	if len(fields) < 1 {
 		fmt.Println(err)
-    }
+	}
 
-    seconds, err := strconv.ParseFloat(fields[0], 64)
-    if err != nil {
+	seconds, err := strconv.ParseFloat(fields[0], 64)
+	if err != nil {
 		fmt.Println(err)
-    }
+	}
 
 	realtime := time.Duration(seconds) * time.Second
 
@@ -193,112 +192,111 @@ func cpu() string {
 }
 
 func vga() string {
-    pciDir := "/sys/bus/pci/devices"
-    idsFile := "/usr/share/hwdata/pci.ids"
+	pciDir := "/sys/bus/pci/devices"
+	idsFile := "/usr/share/hwdata/pci.ids"
 
-    idsContents, err := openFile(idsFile)
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error reading pci.ids: %v\n", err)
+	idsContents, err := openFile(idsFile)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading pci.ids: %v\n", err)
 		os.Exit(-1)
-    }
-    idsLines := strings.Split(string(idsContents), "\n")
+	}
+	idsLines := strings.Split(string(idsContents), "\n")
 
-    devices, err := filepath.Glob(filepath.Join(pciDir, "*"))
+	devices, err := filepath.Glob(filepath.Join(pciDir, "*"))
 	if err != nil {
 		fmt.Println("Glob error:", err)
 		os.Exit(-1)
 	}
-    for _, devPath := range devices {
-        vendorID, err := openFile(filepath.Join(devPath, "vendor"))
-        if err != nil {
-            continue
-        }
-        deviceID, err := openFile(filepath.Join(devPath, "device"))
-        if err != nil {
-            continue
-        }
+	for _, devPath := range devices {
+		vendorID, err := openFile(filepath.Join(devPath, "vendor"))
+		if err != nil {
+			continue
+		}
+		deviceID, err := openFile(filepath.Join(devPath, "device"))
+		if err != nil {
+			continue
+		}
 
 		vendorStr := strings.TrimPrefix(strings.TrimSpace(string(vendorID)), "0x")
 		deviceStr := strings.TrimPrefix(strings.TrimSpace(string(deviceID)), "0x")
 
-        classFile := filepath.Join(devPath, "class")
-        classData, err := openFile(classFile)
+		classFile := filepath.Join(devPath, "class")
+		classData, err := openFile(classFile)
 		class := strings.TrimSpace(string(classData))
 		if !strings.HasPrefix(class, "0x0300") {
 			continue
-        }
+		}
 
 		var currentVendor, vendorName, deviceName string
 
 		for _, line := range idsLines {
-    		if strings.HasPrefix(line, vendorStr+" ") {
-        		parts := strings.SplitN(line, " ", 2)
-        		if len(parts) == 2 {
-            		vendorName = strings.TrimSpace(parts[1])
-            		currentVendor = vendorStr
-        		}
-    		} else if strings.HasPrefix(line, "\t") && currentVendor == vendorStr {
-        		line = strings.TrimSpace(line)
-        		if strings.HasPrefix(line, deviceStr+" ") {
-            		parts := strings.SplitN(line, " ", 2)
-            		if len(parts) == 2 {
-                		deviceName = strings.TrimSpace(parts[1])
-            		}
-        		}
-    		}
+			if strings.HasPrefix(line, vendorStr+" ") {
+				parts := strings.SplitN(line, " ", 2)
+				if len(parts) == 2 {
+					vendorName = strings.TrimSpace(parts[1])
+					currentVendor = vendorStr
+				}
+			} else if strings.HasPrefix(line, "\t") && currentVendor == vendorStr {
+				line = strings.TrimSpace(line)
+				if strings.HasPrefix(line, deviceStr+" ") {
+					parts := strings.SplitN(line, " ", 2)
+					if len(parts) == 2 {
+						deviceName = strings.TrimSpace(parts[1])
+					}
+				}
+			}
 		}
-    	if vendorName != "" && deviceName != "" {
-    		return fmt.Sprintf("%s %s", vendorName, deviceName)
-    	}
+		if vendorName != "" && deviceName != "" {
+			return fmt.Sprintf("%s %s", vendorName, deviceName)
+		}
 	}
-	return ""	
+	return ""
 }
-
 
 func memory() string {
 	meminfoFile := "/proc/meminfo"
 
-    contents, err:= openFile(meminfoFile)
-    if err != nil {
+	contents, err := openFile(meminfoFile)
+	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
-    }
+	}
 
-    var memTotal, memAvailable uint64
-    scanner := bufio.NewScanner(strings.NewReader(contents))
-    for scanner.Scan() {
-        memInfo := scanner.Text()
-        if strings.HasPrefix(memInfo, "MemTotal:") {
-            fields := strings.Fields(memInfo)
-            memValue, _ := strconv.ParseUint(fields[1], 10, 64)
-            memTotal = memValue / 1024
-        } else if strings.HasPrefix(memInfo, "MemAvailable:") {
-            fields := strings.Fields(memInfo)
-            memValue, _ := strconv.ParseUint(fields[1], 10, 64)
-            memAvailable = memValue / 1024
-        }
-    }
+	var memTotal, memAvailable uint64
+	scanner := bufio.NewScanner(strings.NewReader(contents))
+	for scanner.Scan() {
+		memInfo := scanner.Text()
+		if strings.HasPrefix(memInfo, "MemTotal:") {
+			fields := strings.Fields(memInfo)
+			memValue, _ := strconv.ParseUint(fields[1], 10, 64)
+			memTotal = memValue / 1024
+		} else if strings.HasPrefix(memInfo, "MemAvailable:") {
+			fields := strings.Fields(memInfo)
+			memValue, _ := strconv.ParseUint(fields[1], 10, 64)
+			memAvailable = memValue / 1024
+		}
+	}
 
-    memUsed := memTotal - memAvailable
-    return fmt.Sprintf("%dMib / %dMib", memUsed, memTotal)
+	memUsed := memTotal - memAvailable
+	return fmt.Sprintf("%dMib / %dMib", memUsed, memTotal)
 }
 
-func main(){
+func main() {
 	checkOS()
 	clearScreen()
 	fmt.Println("")
 	fmt.Println("	bellafetch")
 	fmt.Println("  [github : xorsirenz]")
 	fmt.Println("")
-	fmt.Println("  host    ::", username() + "@" + hostname())
+	fmt.Println("  host    ::", username()+"@"+hostname())
 	fmt.Println("  os      ::", prettyName())
 	fmt.Println("  ver     ::", kernel())
-	fmt.Println("  uptime  ::", uptime()) 
+	fmt.Println("  uptime  ::", uptime())
 	fmt.Println("  pkgs    ::", pkgManager())
-	fmt.Println("  wm      ::",) 
-	fmt.Println("  cpu     ::", cpu()) 
-	fmt.Println("  gpu     ::", vga()) 
-	fmt.Println("  storage ::",) 
-	fmt.Println(" memory  ::", memory()) 
+	fmt.Println("  wm      ::")
+	fmt.Println("  cpu     ::", cpu())
+	fmt.Println("  gpu     ::", vga())
+	fmt.Println("  storage ::")
+	fmt.Println(" memory  ::", memory())
 	fmt.Println("")
 }
