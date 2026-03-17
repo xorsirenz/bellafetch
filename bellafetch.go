@@ -174,11 +174,11 @@ func kernel() string {
 	return kernelVersion
 }
 
-func detectPkgManager() int {
+func pkgManager() int {
 	id := osRelease()
-	packageMgr := id["ID"]
+	detectPackageMgr := id["ID"]
 
-	switch packageMgr {
+	switch detectPackageMgr {
 	case "arch", "manjaro":
 		pkgs := pacman()
 		return pkgs
@@ -293,7 +293,7 @@ func main(){
 	fmt.Println("  os      ::", prettyName())
 	fmt.Println("  ver     ::", kernel())
 	fmt.Println("  uptime  ::", uptime()) 
-	fmt.Println("  pkgs    ::", detectPkgManager())
+	fmt.Println("  pkgs    ::", pkgManager())
 	fmt.Println("  wm      ::",) 
 	fmt.Println("  cpu     ::", cpu()) 
 	fmt.Println("  gpu     ::", vga()) 
