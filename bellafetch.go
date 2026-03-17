@@ -113,7 +113,9 @@ func username() string {
 }
 
 func hostname() string {
-	hostnameContents, err := openFile("/etc/hostname")
+	hostnameFile := "/etc/hostname"
+
+	hostnameContents, err := openFile(hostnameFile)
 	if err != nil {
 		fmt.Println("error:", err)
 		os.Exit(-1)
@@ -126,7 +128,9 @@ func hostname() string {
 
 
 func distro() string {
-	contents, err := openFile("/etc/os-release")
+	osReleaseFile := "/etc/os-release"
+
+	contents, err := openFile(osReleaseFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
@@ -146,7 +150,9 @@ func distro() string {
 }
 
 func kernel() string {
-	contents, err := openFile("/proc/version")
+	versionFile := "/proc/version"
+
+	contents, err := openFile(versionFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
@@ -177,7 +183,9 @@ func packages() int {
 }
 
 func uptime() string {
-    data, err := openFile("/proc/uptime")
+	uptimeFile := "/proc/uptime"
+
+    data, err := openFile(uptimeFile)
     if err != nil {
 		fmt.Println(err)
     }
@@ -202,7 +210,9 @@ func uptime() string {
 }
 
 func cpu() string {
-	contents, err := openFile("/proc/cpuinfo")
+	cpuinfoFile := "/proc/cpuinfo"
+
+	contents, err := openFile(cpuinfoFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
@@ -225,7 +235,9 @@ func cpu() string {
 }
 
 func memory() string {
-    contents, err:= openFile("/proc/meminfo")
+	meminfoFile := "/proc/meminfo"
+
+    contents, err:= openFile(meminfoFile)
     if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
