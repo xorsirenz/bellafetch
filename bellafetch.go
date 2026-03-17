@@ -120,11 +120,29 @@ func pkgManager() int {
 		pkgs := pacman()
 		return pkgs
 	case "debian", "linuxmint", "ubuntu":
-		fmt.Println("apt not supported yet")
+		pkgs := apt()
+		return pkgs
 	default:
 		fmt.Println("No supported package manager detected")
 	}
 	return 0
+}
+
+func apt() int {
+	out, err := exec.Command("dpkg-query", "--list").Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	output := string(out)
+	outputLines := strings.Split(output, "\n")
+	count := 0
+	for _, line := range outputLines {
+		if strings.HasPrefix(strings.TrimSpace(line), "ii") {
+			count++
+		}
+	}
+	return count
 }
 
 func pacman() int {
