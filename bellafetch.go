@@ -6,7 +6,6 @@ import (
 	"io"
 	"math"
 	"os"
-	"os/exec"
 	"os/user"
 	"path/filepath"
 	"regexp"
@@ -18,8 +17,7 @@ import (
 )
 
 func clearScreen() {
-	clear, _ := exec.Command("clear").Output()
-	os.Stdout.Write(clear)
+	fmt.Print("\033[H\033[2J")
 }
 
 func checkOS() {
