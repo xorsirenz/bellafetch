@@ -77,7 +77,6 @@ func hostname() string {
 	hostnameContents, err := openFile(hostnameFile)
 	if err != nil {
 		fmt.Println("Error:", err)
-		os.Exit(-1)
 	}
 
 	hostname := string(hostnameContents)
@@ -189,7 +188,6 @@ func cpu() string {
 	contents, err := openFile(cpuinfoFile)
 	if err != nil {
 		fmt.Println("Error:", err)
-		os.Exit(-1)
 	}
 
 	cpuVersion := ""
@@ -215,14 +213,12 @@ func vga() string {
 	idsContents, err := openFile(idsFile)
 	if err != nil {
 		fmt.Println("Error:", err)
-		os.Exit(-1)
 	}
 	idsLines := strings.Split(string(idsContents), "\n")
 
 	devices, err := filepath.Glob(filepath.Join(pciDir, "*"))
 	if err != nil {
 		fmt.Println("Error:", err)
-		os.Exit(-1)
 	}
 	for _, devPath := range devices {
 		vendorID, err := openFile(filepath.Join(devPath, "vendor"))
@@ -304,7 +300,6 @@ func memory() string {
 	contents, err := openFile(meminfoFile)
 	if err != nil {
 		fmt.Println("Error:", err)
-		os.Exit(-1)
 	}
 
 	var memTotal, memAvailable uint64
