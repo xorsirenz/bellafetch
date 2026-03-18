@@ -15,7 +15,7 @@ func PkgManager() int {
 		pkgs := pacman()
 		return pkgs
 	case "debian", "linuxmint", "ubuntu":
-		pkgs := apt()
+		pkgs := dpkg()
 		return pkgs
 	default:
 		fmt.Println("No supported package manager detected")
@@ -23,7 +23,7 @@ func PkgManager() int {
 	return 0
 }
 
-func apt() int {
+func dpkg() int {
 	dpkgStatusFile := "/var/lib/dpkg/status"
 
 	out, err := OpenFile(dpkgStatusFile)
