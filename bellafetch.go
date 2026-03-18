@@ -22,7 +22,7 @@ func clearScreen() {
 
 func checkOS() {
 	if runtime.GOOS != "linux" {
-		fmt.Println("bellafetch is only capitable with Linux right now..")
+		fmt.Println("Error: Bellafetch is only capitable with Linux right now..")
 		os.Exit(-1)
 	}
 }
@@ -47,7 +47,6 @@ func osRelease() map[string]string {
 	contents, err := openFile(osReleaseFile)
 	if err != nil {
 		fmt.Println("Error:", err)
-		os.Exit(-1)
 	}
 
 	entries := strings.Split(contents, "\n")
@@ -65,8 +64,7 @@ func osRelease() map[string]string {
 func username() string {
 	currentUser, err := user.Current()
 	if err != nil {
-		fmt.Println("error:", err)
-		os.Exit(-1)
+		fmt.Println("Error:", err)
 	}
 	return currentUser.Username
 }
@@ -76,7 +74,7 @@ func hostname() string {
 
 	hostnameContents, err := openFile(hostnameFile)
 	if err != nil {
-		fmt.Println("error:", err)
+		fmt.Println("Error:", err)
 		os.Exit(-1)
 	}
 
@@ -96,7 +94,6 @@ func kernel() string {
 	contents, err := openFile(versionFile)
 	if err != nil {
 		fmt.Println("Error:", err)
-		os.Exit(-1)
 	}
 
 	kernelVersion := ""
@@ -131,7 +128,7 @@ func pkgManager() int {
 func apt() int {
 	out, err := exec.Command("dpkg-query", "--list").Output()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error:", err)
 	}
 
 	output := string(out)
@@ -148,7 +145,7 @@ func apt() int {
 func pacman() int {
 	out, err := exec.Command("pacman", "-Q").Output()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error:", err)
 	}
 
 	output := string(out)
@@ -162,17 +159,17 @@ func uptime() string {
 
 	data, err := openFile(uptimeFile)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error:", err)
 	}
 
 	fields := strings.Fields(string(data))
 	if len(fields) < 1 {
-		fmt.Println(err)
+		fmt.Println("Error:", err)
 	}
 
 	seconds, err := strconv.ParseFloat(fields[0], 64)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error:", err)
 	}
 
 	realtime := time.Duration(seconds) * time.Second
@@ -215,14 +212,14 @@ func vga() string {
 
 	idsContents, err := openFile(idsFile)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading pci.ids: %v\n", err)
+		fmt.Println("Error:", err)
 		os.Exit(-1)
 	}
 	idsLines := strings.Split(string(idsContents), "\n")
 
 	devices, err := filepath.Glob(filepath.Join(pciDir, "*"))
 	if err != nil {
-		fmt.Println("Glob error:", err)
+		fmt.Println("Error:", err)
 		os.Exit(-1)
 	}
 	for _, devPath := range devices {
@@ -302,19 +299,32 @@ func memory() string {
 func main() {
 	checkOS()
 	clearScreen()
+
+	user := username()
+	host := hostname()
+	prettyName := prettyName()
+	kernel := kernel()
+	uptime := uptime()
+	pkgs := pkgManager()
+	wm := ""
+	cpu := cpu()
+	vga := vga()
+	storage := ""
+	memory := memory()
+
 	fmt.Println("")
 	fmt.Println("	bellafetch")
 	fmt.Println("  [github : xorsirenz]")
 	fmt.Println("")
-	fmt.Println("  host    ::", username()+"@"+hostname())
-	fmt.Println("  os      ::", prettyName())
-	fmt.Println("  ver     ::", kernel())
-	fmt.Println("  uptime  ::", uptime())
-	fmt.Println("  pkgs    ::", pkgManager())
-	fmt.Println("  wm      ::")
-	fmt.Println("  cpu     ::", cpu())
-	fmt.Println("  gpu     ::", vga())
-	fmt.Println("  storage ::")
-	fmt.Println(" memory  ::", memory())
+	fmt.Println("  host    ::", user+"@"+host)
+	fmt.Println("  os      ::", prettyName)
+	fmt.Println("  ver     ::", kernel)
+	fmt.Println("  uptime  ::", uptime)
+	fmt.Println("  pkgs    ::", pkgs)
+	fmt.Println("  wm      ::", wm)
+	fmt.Println("  cpu     ::", cpu)
+	fmt.Println("  gpu     ::", vga)
+	fmt.Println("  storage ::", storage)
+	fmt.Println(" memory  ::", memory)
 	fmt.Println("")
 }
