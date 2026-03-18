@@ -24,7 +24,7 @@ for target in "${TARGETS[@]}"; do
     
     FILE_NAME="${PACKAGE_NAME}-${PACKAGE_VERSION}-${GOOS}-${GOARCH}"
 
-    go build -o "${FILE_NAME}" "${SOURCE_FILE}"
+    go build -o "${FILE_NAME}" cmd/"${SOURCE_FILE}"
     tar -czvf "${FILE_NAME}.tar.gz" "${FILE_NAME}"
 
     if cp ${FILE_NAME} /usr/local/bin/${PACKAGE_NAME}; then
