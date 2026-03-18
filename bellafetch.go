@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"os/exec"
 	"os/user"
@@ -12,6 +13,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 )
 
@@ -268,6 +270,34 @@ func vga() string {
 	return ""
 }
 
+func prettyByteSize(b uint64) string {
+	bf := float64(b)
+	for _, unit := range []string{"", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"} {
+		if math.Abs(bf) < 1024.0 {
+			return fmt.Sprintf("%3.1f%sB", bf, unit)
+		}
+		bf /= 1024.0
+	}
+	return fmt.Sprintf("%.1fYiB", bf)
+}
+
+func storage() string{
+	path := "/"
+	var fs syscall.Statfs_t
+	err := syscall.Statfs(path, &fs)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+	total := fs.Blocks * uint64(fs.Bsize)
+	free := fs.Bfree * uint64(fs.Bsize)
+	used := total - free
+
+	totalConverted := prettyByteSize(total)
+	usedConverted := prettyByteSize(used)
+
+	return fmt.Sprintf("%s / %s", usedConverted, totalConverted)
+}
+
 func memory() string {
 	meminfoFile := "/proc/meminfo"
 
@@ -309,7 +339,7 @@ func main() {
 	wm := ""
 	cpu := cpu()
 	vga := vga()
-	storage := ""
+	storage := storage()
 	memory := memory()
 
 	fmt.Println("")
