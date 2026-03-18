@@ -281,7 +281,7 @@ func prettyByteSize(b uint64) string {
 	return fmt.Sprintf("%.1fYiB", bf)
 }
 
-func storage() string{
+func storage() string {
 	path := "/"
 	var fs syscall.Statfs_t
 	err := syscall.Statfs(path, &fs)
@@ -314,16 +314,18 @@ func memory() string {
 		if strings.HasPrefix(memInfo, "MemTotal:") {
 			fields := strings.Fields(memInfo)
 			memValue, _ := strconv.ParseUint(fields[1], 10, 64)
-			memTotal = memValue / 1024
+			memTotal = memValue * 1024
 		} else if strings.HasPrefix(memInfo, "MemAvailable:") {
 			fields := strings.Fields(memInfo)
 			memValue, _ := strconv.ParseUint(fields[1], 10, 64)
-			memAvailable = memValue / 1024
+			memAvailable = memValue * 1024
 		}
 	}
 
 	memUsed := memTotal - memAvailable
-	return fmt.Sprintf("%dMib / %dMib", memUsed, memTotal)
+	memTotalPretty := prettyByteSize(memTotal)
+	memUsedPretty := prettyByteSize(memUsed)
+	return fmt.Sprintf("%s / %s", memUsedPretty, memTotalPretty)
 }
 
 func main() {
