@@ -127,31 +127,27 @@ func pkgManager() int {
 }
 
 func apt() int {
-	out, err := exec.Command("dpkg-query", "--list").Output()
+	dpkgStatusFile := "/var/lib/dpkg/status"
+
+	out, err := openFile(dpkgStatusFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
 
 	output := string(out)
-	outputLines := strings.Split(output, "\n")
-	count := 0
-	for _, line := range outputLines {
-		if strings.HasPrefix(strings.TrimSpace(line), "ii") {
-			count++
-		}
-	}
-	return count
+	outputLines := strings.Split(output, "\n\n")
+	lines := len(outputLines) - 1
+	return lines
 }
 
 func pacman() int {
-	out, err := exec.Command("pacman", "-Q").Output()
-	if err != nil {
-		fmt.Println("Error:", err)
-	}
+	packages := "/var/lib/pacman/local"
 
-	output := string(out)
-	outputLines := strings.Split(output, "\n")
-	lines := len(outputLines) - 1
+	entries, err := os.ReadDir(packages)
+	if err != nil {
+		fmt.Println("Error", err)
+	}
+	lines := len(entries) - 1
 	return lines
 }
 
