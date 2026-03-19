@@ -8,12 +8,23 @@ import (
 	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 
+func parseID(id string) string {
+	ids := strings.Fields(id)
+	firstID := ids[0]
+	cleanedID := strings.ReplaceAll(firstID, "\"", "")
+	id = cleanedID
+	return id
+}
+
 func PkgManager() int {
 	osInfo := OsRelease()
 	id := osInfo["ID_LIKE"]
 
 	if id == "" {
 		id = osInfo["ID"]
+	}
+	if len(id) > 1 {
+		id = parseID(id)
 	}
 
 	switch id {
