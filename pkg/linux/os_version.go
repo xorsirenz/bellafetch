@@ -3,11 +3,13 @@ package linux
 import (
 	"strings"
 	"fmt"
+
+	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 func OsRelease() map[string]string {
 	OsReleaseFile := "/etc/os-release"
 
-	contents, err := OpenFile(OsReleaseFile)
+	contents, err := utils.OpenFile(OsReleaseFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}

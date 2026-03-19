@@ -5,12 +5,14 @@ import (
 	"strings"
 	"regexp"
 	"bufio"
+
+	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 
 func Kernel() string {
 	versionFile := "/proc/version"
 
-	contents, err := OpenFile(versionFile)
+	contents, err := utils.OpenFile(versionFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}

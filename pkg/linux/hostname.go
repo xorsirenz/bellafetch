@@ -3,12 +3,14 @@ package linux
 import (
 	"fmt"
 	"strings"
+
+	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 
 func Hostname() string {
 	hostnameFile := "/etc/hostname"
 
-	hostnameContents, err := OpenFile(hostnameFile)
+	hostnameContents, err := utils.OpenFile(hostnameFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}

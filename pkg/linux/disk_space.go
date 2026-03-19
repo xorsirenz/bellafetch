@@ -3,6 +3,8 @@ package linux
 import (
 	"fmt"
 	"syscall"
+
+	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 func Storage() string {
 	path := "/"
@@ -15,8 +17,8 @@ func Storage() string {
 	free := fs.Bfree * uint64(fs.Bsize)
 	used := total - free
 
-	totalConverted := prettyByteSize(total)
-	usedConverted := prettyByteSize(used)
+	totalConverted := utils.PrettyByteSize(total)
+	usedConverted := utils.PrettyByteSize(used)
 
 	return fmt.Sprintf("%s / %s", usedConverted, totalConverted)
 }

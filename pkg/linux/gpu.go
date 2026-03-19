@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"strings"
 	"path/filepath"
+
+	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 
 func Gpu() string {
 	pciDir := "/sys/bus/pci/devices"
 	idsFile := "/usr/share/hwdata/pci.ids"
 
-	idsContents, err := OpenFile(idsFile)
+	idsContents, err := utils.OpenFile(idsFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
@@ -21,11 +23,11 @@ func Gpu() string {
 		fmt.Println("Error:", err)
 	}
 	for _, devPath := range devices {
-		vendorID, err := OpenFile(filepath.Join(devPath, "vendor"))
+		vendorID, err := utils.OpenFile(filepath.Join(devPath, "vendor"))
 		if err != nil {
 			continue
 		}
-		deviceID, err := OpenFile(filepath.Join(devPath, "device"))
+		deviceID, err := utils.OpenFile(filepath.Join(devPath, "device"))
 		if err != nil {
 			continue
 		}
@@ -34,7 +36,7 @@ func Gpu() string {
 		deviceStr := strings.TrimPrefix(strings.TrimSpace(string(deviceID)), "0x")
 
 		classFile := filepath.Join(devPath, "class")
-		classData, err := OpenFile(classFile)
+		classData, err := utils.OpenFile(classFile)
 		class := strings.TrimSpace(string(classData))
 		if !strings.HasPrefix(class, "0x0300") {
 			continue

@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"bufio"
 	"strings"
+
+	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 func Cpu() string {
 	cpuinfoFile := "/proc/cpuinfo"
 
-	contents, err := OpenFile(cpuinfoFile)
+	contents, err := utils.OpenFile(cpuinfoFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}

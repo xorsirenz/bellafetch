@@ -5,12 +5,14 @@ import (
 	"strings"
 	"strconv"
 	"time"
+
+	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 
 func Uptime() string {
 	uptimeFile := "/proc/uptime"
 
-	data, err := OpenFile(uptimeFile)
+	data, err := utils.OpenFile(uptimeFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}

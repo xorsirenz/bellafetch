@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 
 func PkgManager() int {
@@ -26,7 +28,7 @@ func PkgManager() int {
 func dpkg() int {
 	dpkgStatusFile := "/var/lib/dpkg/status"
 
-	out, err := OpenFile(dpkgStatusFile)
+	out, err := utils.OpenFile(dpkgStatusFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}

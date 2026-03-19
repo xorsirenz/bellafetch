@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"strings"
 	"strconv"
+
+	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 func Memory() string {
 	meminfoFile := "/proc/meminfo"
 
-	contents, err := OpenFile(meminfoFile)
+	contents, err := utils.OpenFile(meminfoFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
@@ -30,7 +32,7 @@ func Memory() string {
 	}
 
 	memUsed := memTotal - memAvailable
-	memTotalPretty := prettyByteSize(memTotal)
-	memUsedPretty := prettyByteSize(memUsed)
+	memTotalPretty := utils.PrettyByteSize(memTotal)
+	memUsedPretty := utils.PrettyByteSize(memUsed)
 	return fmt.Sprintf("%s / %s", memUsedPretty, memTotalPretty)
 }
