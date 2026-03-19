@@ -8,6 +8,8 @@ import (
 	"github.com/xorsirenz/bellafetch/pkg/linux"
 )
 
+var version string
+
 var data = make(map[string]any)
 
 func clearScreen() {
