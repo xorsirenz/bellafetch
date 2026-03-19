@@ -43,7 +43,7 @@ func getLinuxData() {
 		data["pkgs"] = linux.PkgManager()
 		data["wm"] = ""
 		data["cpu"] = linux.Cpu()
-		data["gpu"] = linux.Vga()
+		data["gpu"] = linux.Gpu()
 		data["diskSpace"] = linux.Storage()
 		data["memory"] = linux.Memory()
 }

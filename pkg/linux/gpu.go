@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-func Vga() string {
+func Gpu() string {
 	pciDir := "/sys/bus/pci/devices"
 	idsFile := "/usr/share/hwdata/pci.ids"
 
