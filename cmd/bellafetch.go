@@ -20,7 +20,7 @@ func checkOS() {
 	goos := runtime.GOOS
 	switch goos {
 	case "linux":
-		getLinuxData()
+		 data = linux.GetLinuxData()
 	case "freebsd","netbsd","openbsd", "dragonfly" :
 		fmt.Println("Error: Bellafetch is not capitable with any BSD derivatives right now..")
 		os.Exit(-1)
@@ -35,21 +35,6 @@ func checkOS() {
 		os.Exit(-1)
 	}
 } 
-
-func getLinuxData() {
-		data["user"] = linux.Username()
-		data["host"] = linux.Hostname()
-		data["prettyname"] = linux.PrettyName()
-		data["kernel"] = linux.Kernel()
-		data["uptime"] = linux.Uptime()
-		data["pkgs"] = linux.PkgManager()
-		data["wm"] = ""
-		data["cpu"] = linux.Cpu()
-		data["gpu"] = linux.Gpu()
-		data["diskSpace"] = linux.Storage()
-		data["memory"] = linux.Memory()
-}
-
 
 func main() {
 	checkOS()
