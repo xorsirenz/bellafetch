@@ -2,52 +2,70 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"runtime"
+	"os"
 
 	"github.com/xorsirenz/bellafetch/pkg/linux"
 )
+
+var data = make(map[string]any)
 
 func clearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
 
 func checkOS() {
-	if runtime.GOOS != "linux" {
-		fmt.Println("Error: Bellafetch is only capitable with Linux right now..")
+	goos := runtime.GOOS
+	switch goos {
+	case "linux":
+		getLinuxData()
+	case "freebsd","netbsd","openbsd", "dragonfly" :
+		fmt.Println("Error: Bellafetch is not capitable with any BSD derivatives right now..")
+		os.Exit(-1)
+	case "darwin":
+		fmt.Println("Error: Bellafetch is not capitable with Darwin/Mac OSX right now..")
+		os.Exit(-1)
+	case "windows":
+		fmt.Println("Error: Bellafetch is not capitable with Windows right now..")
+		os.Exit(-1)
+	default:
+		fmt.Println("Error: Bellafetch cannot detect OS target..")
 		os.Exit(-1)
 	}
+} 
+
+func getLinuxData() {
+		data["user"] = linux.Username()
+		data["host"] = linux.Hostname()
+		data["prettyname"] = linux.PrettyName()
+		data["kernel"] = linux.Kernel()
+		data["uptime"] = linux.Uptime()
+		data["pkgs"] = linux.PkgManager()
+		data["wm"] = ""
+		data["cpu"] = linux.Cpu()
+		data["gpu"] = linux.Vga()
+		data["diskSpace"] = linux.Storage()
+		data["memory"] = linux.Memory()
 }
+
 
 func main() {
 	checkOS()
 	clearScreen()
 
-	user := linux.Username()
-	host := linux.Hostname()
-	prettyName := linux.PrettyName()
-	kernel := linux.Kernel()
-	uptime := linux.Uptime()
-	pkgs := linux.PkgManager()
-	wm := ""
-	cpu := linux.Cpu()
-	vga := linux.Vga()
-	storage := linux.Storage()
-	memory := linux.Memory()
-
 	fmt.Println("")
 	fmt.Println("	bellafetch")
 	fmt.Println("  [github : xorsirenz]")
 	fmt.Println("")
-	fmt.Println("  host    ::", user+"@"+host)
-	fmt.Println("  os      ::", prettyName)
-	fmt.Println("  ver     ::", kernel)
-	fmt.Println("  uptime  ::", uptime)
-	fmt.Println("  pkgs    ::", pkgs)
-	fmt.Println("  wm      ::", wm)
-	fmt.Println("  cpu     ::", cpu)
-	fmt.Println("  gpu     ::", vga)
-	fmt.Println("  storage ::", storage)
-	fmt.Println(" memory  ::", memory)
+	fmt.Printf("  host    :: %v@%v\n", data["user"], data["host"])
+	fmt.Printf("  os      :: %v\n", data["prettyname"])
+	fmt.Printf("  ver     :: %v\n", data["kernel"])
+	fmt.Printf("  uptime  :: %v\n", data["uptime"])
+	fmt.Printf("  pkgs    :: %v\n", data["pkgs"])
+	fmt.Printf("  wm      :: %v\n", data["wm"])
+	fmt.Printf("  cpu     :: %v\n", data["cpu"])
+	fmt.Printf("  gpu     :: %v\n", data["gpu"])
+	fmt.Printf("  storage :: %v\n", data["diskSpace"])
+	fmt.Printf(" memory  :: %v\n", data["memory"])
 	fmt.Println("")
 }
