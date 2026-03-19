@@ -9,10 +9,14 @@ import (
 )
 
 func PkgManager() int {
-	id := OsRelease()
-	detectPackageMgr := id["ID"]
+	osInfo := OsRelease()
+	id := osInfo["ID_LIKE"]
 
-	switch detectPackageMgr {
+	if id == "" {
+		id = osInfo["ID"]
+	}
+
+	switch id {
 	case "arch", "manjaro":
 		pkgs := pacman()
 		return pkgs
