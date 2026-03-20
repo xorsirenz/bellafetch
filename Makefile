@@ -1,7 +1,7 @@
 SHELL := /bin/sh
 PACKAGE= bellafetch
 SOURCES := $(wildcard *.go cmd/*.go)
-VERSION=$(shell git describe --tags --long 2>/dev/null)
+VERSION=$(shell git describe --tags --long --dirty 2>/dev/null)
 
 TAGS=netgo,osusergo
 LDFLAGS="-extldflags '-static' -s -w -X main.version=${VERSION}"
