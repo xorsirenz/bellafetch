@@ -36,23 +36,33 @@ func checkOS() utils.Data {
 	return utils.Data{}
 }
 
+
 func main() {
 	data := checkOS()
 	clearScreen()
+
+	config, err := utils.LoadConfig("config.json")
+	if err != nil {
+		panic(err)
+	}
+
+	contextMap := map[string]string{
+		"Host":       "  host    ::",
+		"PrettyName": "  os      ::",
+		"Kernel":     "  ver     ::",
+		"Uptime":     "  uptime  ::",
+		"Packages":   "  pkgs    ::",
+		"WM":         "  wm      ::",
+		"Cpu":        "  cpu     ::",
+		"Gpu":        "  gpu     ::",
+		"DiskSpace":  "  storage ::",
+		"Memory":     " memory  ::",
+	}
 
 	fmt.Println("")
 	fmt.Println("	bellafetch")
 	fmt.Println("  [github : xorsirenz]")
 	fmt.Println("")
-	fmt.Printf("  host    :: %v@%v\n", data.Username, data.Hostname)
-	fmt.Printf("  os      :: %v\n", data.PrettyName)
-	fmt.Printf("  ver     :: %v\n", data.Kernel)
-	fmt.Printf("  uptime  :: %v\n", data.Uptime)
-	fmt.Printf("  pkgs    :: %v\n", data.Packages)
-	fmt.Printf("  wm      :: %v\n", data.WM)
-	fmt.Printf("  cpu     :: %v\n", data.Cpu)
-	fmt.Printf("  gpu     :: %v\n", data.Gpu)
-	fmt.Printf("  storage :: %v\n", data.DiskSpace)
-	fmt.Printf(" memory  :: %v\n", data.Memory)
+	utils.PrintSelectedFields(data, config, contextMap)
 	fmt.Println("")
 }

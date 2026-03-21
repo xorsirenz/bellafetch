@@ -7,13 +7,13 @@ import (
 func OpenFile(filename string) (string, error) {
 	file, err := os.Open(filename)
 	if err != nil {
-		return "", fmt.Errorf("failed to open file: %w", filename, err)
+		return "", fmt.Errorf("failed to open file: %q", filename, err)
 	}
 	defer file.Close()
 
 	data, err := os.ReadFile(filename)
 	if err != nil {
-		return "", fmt.Errorf("failed to read file %w", filename, err)
+		return "", fmt.Errorf("failed to read file %q", filename, err)
 	}
 	return string(data), nil
 }
