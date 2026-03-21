@@ -4,23 +4,21 @@
 
 ![](https://github.com/xorsirenz/bellafetch/blob/main/ss.png?raw=true)
 
-## Prerequisites:
-- linux
-- golang
+## Requirements:
+- \>= [golang v1.26.1](https://go.dev/)
 
 ##  Installation:
-### Linux
-1. Clone the repo:
+### Build from source
 ```sh
+# clone the repo
 $ git clone https://github.com/xorsirenz/bellafetch.git 
-```
-2. Build and run the project:
-```
+
+# cd into the repo
+$ cd bellafetch/
+
+# build bellafetch
 $ make
-# run
-$ ./bellafetch
-```
- Allow the program to execute globally:
- ```sh
- $ sudo cp bellafetch /usr/local/bin
+
+# move binary into your $PATH.. example:
+$ sudo mv bellafetch /usr/local/bin
  ```
