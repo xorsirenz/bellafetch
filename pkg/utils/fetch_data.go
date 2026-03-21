@@ -1,8 +1,7 @@
 package utils
 
 type Data struct {
-	Username   string
-	Hostname   string
+	Host       string
 	PrettyName string
 	Kernel     string
 	Uptime     string

@@ -3,9 +3,16 @@ package linux
 import (
 	"fmt"
 	"strings"
+	"os/user"
 
 	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
+func Host() string {
+	hostname := Hostname()
+	username := Username()
+	host := hostname + "@" + username
+	return host
+}
 
 func Hostname() string {
 	hostname := "/etc/hostname"
@@ -17,4 +24,12 @@ func Hostname() string {
 
 	host := strings.TrimSuffix(hostnameContents, "\n")
 	return host
+}
+
+func Username() string {
+	user, err := user.Current()
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+	return user.Username
 }

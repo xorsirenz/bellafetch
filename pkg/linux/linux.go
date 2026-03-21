@@ -6,8 +6,7 @@ import (
 
 func GetLinuxData() utils.Data {
 	return utils.Data{
-		Username:   Username(),
-		Hostname:   Hostname(),
+		Host:   	Host(),
 		PrettyName: PrettyName(),
 		Kernel:     Kernel(),
 		Uptime:     Uptime(),
