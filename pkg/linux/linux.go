@@ -15,7 +15,7 @@ func GetLinuxData() utils.Data {
 		WM:         "",
 		Cpu:        Cpu(),
 		Gpu:        Gpu(),
-		DiskSpace:  Storage(),
+		DiskSpace:  DiskSpace(),
 		Memory:     Memory(),
 	}
 }

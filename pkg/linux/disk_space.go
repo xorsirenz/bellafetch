@@ -6,7 +6,7 @@ import (
 
 	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
-func Storage() string {
+func DiskSpace() string {
 	path := "/"
 	var fs syscall.Statfs_t
 	err := syscall.Statfs(path, &fs)
