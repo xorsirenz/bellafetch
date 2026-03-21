@@ -2,26 +2,25 @@ package main
 
 import (
 	"fmt"
-	"runtime"
 	"os"
+	"runtime"
 
 	"github.com/xorsirenz/bellafetch/pkg/linux"
+	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 
 var version string
-
-var data = make(map[string]any)
 
 func clearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
 
-func checkOS() {
+func checkOS() utils.Data {
 	goos := runtime.GOOS
 	switch goos {
 	case "linux":
-		 data = linux.GetLinuxData()
-	case "freebsd","netbsd","openbsd", "dragonfly" :
+		return linux.GetLinuxData()
+	case "freebsd", "netbsd", "openbsd", "dragonfly":
 		fmt.Println("Error: Bellafetch is not capitable with any BSD derivatives right now..")
 		os.Exit(-1)
 	case "darwin":
@@ -34,25 +33,26 @@ func checkOS() {
 		fmt.Println("Error: Bellafetch cannot detect OS target..")
 		os.Exit(-1)
 	}
-} 
+	return utils.Data{}
+}
 
 func main() {
-	checkOS()
+	data := checkOS()
 	clearScreen()
 
 	fmt.Println("")
 	fmt.Println("	bellafetch")
 	fmt.Println("  [github : xorsirenz]")
 	fmt.Println("")
-	fmt.Printf("  host    :: %v@%v\n", data["user"], data["host"])
-	fmt.Printf("  os      :: %v\n", data["prettyname"])
-	fmt.Printf("  ver     :: %v\n", data["kernel"])
-	fmt.Printf("  uptime  :: %v\n", data["uptime"])
-	fmt.Printf("  pkgs    :: %v\n", data["pkgs"])
-	fmt.Printf("  wm      :: %v\n", data["wm"])
-	fmt.Printf("  cpu     :: %v\n", data["cpu"])
-	fmt.Printf("  gpu     :: %v\n", data["gpu"])
-	fmt.Printf("  storage :: %v\n", data["diskSpace"])
-	fmt.Printf(" memory  :: %v\n", data["memory"])
+	fmt.Printf("  host    :: %v@%v\n", data.Username, data.Hostname)
+	fmt.Printf("  os      :: %v\n", data.PrettyName)
+	fmt.Printf("  ver     :: %v\n", data.Kernel)
+	fmt.Printf("  uptime  :: %v\n", data.Uptime)
+	fmt.Printf("  pkgs    :: %v\n", data.PkgManager)
+	fmt.Printf("  wm      :: %v\n", data.WM)
+	fmt.Printf("  cpu     :: %v\n", data.Cpu)
+	fmt.Printf("  gpu     :: %v\n", data.Gpu)
+	fmt.Printf("  storage :: %v\n", data.DiskSpace)
+	fmt.Printf(" memory  :: %v\n", data.Memory)
 	fmt.Println("")
 }
