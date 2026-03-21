@@ -1,20 +1,19 @@
 package utils
 
 import (
+	"fmt"
 	"os"
-	"io"
 )
 func OpenFile(filename string) (string, error) {
 	file, err := os.Open(filename)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to open file: %w", filename, err)
 	}
 	defer file.Close()
 
-	data, err := io.ReadAll(file)
+	data, err := os.ReadFile(filename)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to read file %w", filename, err)
 	}
 	return string(data), nil
 }
-

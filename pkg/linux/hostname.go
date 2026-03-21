@@ -8,14 +8,13 @@ import (
 )
 
 func Hostname() string {
-	hostnameFile := "/etc/hostname"
+	hostname := "/etc/hostname"
 
-	hostnameContents, err := utils.OpenFile(hostnameFile)
+	hostnameContents, err := utils.OpenFile(hostname)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
 
-	hostname := string(hostnameContents)
-	host := strings.TrimSuffix(hostname, "\n")
+	host := strings.TrimSuffix(hostnameContents, "\n")
 	return host
 }

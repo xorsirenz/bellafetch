@@ -6,9 +6,9 @@ import (
 )
 
 func Username() string {
-	currentUser, err := user.Current()
+	user, err := user.Current()
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
-	return currentUser.Username
+	return user.Username
 }

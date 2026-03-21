@@ -1,10 +1,10 @@
 package linux
 
 import (
-	"fmt"
-	"strings"
-	"regexp"
 	"bufio"
+	"fmt"
+	"regexp"
+	"strings"
 
 	"github.com/xorsirenz/bellafetch/pkg/utils"
 )

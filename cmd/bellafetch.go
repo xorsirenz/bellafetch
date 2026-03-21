@@ -48,7 +48,7 @@ func main() {
 	fmt.Printf("  os      :: %v\n", data.PrettyName)
 	fmt.Printf("  ver     :: %v\n", data.Kernel)
 	fmt.Printf("  uptime  :: %v\n", data.Uptime)
-	fmt.Printf("  pkgs    :: %v\n", data.PkgManager)
+	fmt.Printf("  pkgs    :: %v\n", data.Packages)
 	fmt.Printf("  wm      :: %v\n", data.WM)
 	fmt.Printf("  cpu     :: %v\n", data.Cpu)
 	fmt.Printf("  gpu     :: %v\n", data.Gpu)

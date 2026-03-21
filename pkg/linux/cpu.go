@@ -1,12 +1,13 @@
 package linux
 
 import (
-	"fmt"
 	"bufio"
+	"fmt"
 	"strings"
 
 	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
+
 func Cpu() string {
 	cpuinfoFile := "/proc/cpuinfo"
 
@@ -15,7 +16,7 @@ func Cpu() string {
 		fmt.Println("Error:", err)
 	}
 
-	cpuVersion := ""
+	var cpuVersion string
 	scanner := bufio.NewScanner(strings.NewReader(contents))
 
 	for scanner.Scan() {
@@ -23,8 +24,7 @@ func Cpu() string {
 		if strings.HasPrefix(cpuInfo, "model name") {
 			cpu := strings.SplitN(cpuInfo, ":", 2)
 			if len(cpu) == 2 {
-				cpuVersion := strings.TrimSpace(cpu[1])
-				return cpuVersion
+				cpuVersion = strings.TrimSpace(cpu[1])
 			}
 		}
 	}

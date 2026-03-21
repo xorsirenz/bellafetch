@@ -2,41 +2,44 @@ package linux
 
 import (
 	"fmt"
-	"strings"
 	"path/filepath"
+	"strings"
 
 	"github.com/xorsirenz/bellafetch/pkg/utils"
 )
 
 func Gpu() string {
 	pciDir := "/sys/bus/pci/devices"
-	idsFile := "/usr/share/hwdata/pci.ids"
+	pciFile := "/usr/share/hwdata/pci.ids"
 
-	idsContents, err := utils.OpenFile(idsFile)
+	pciContents, err := utils.OpenFile(pciFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
-	idsLines := strings.Split(string(idsContents), "\n")
+	idsLines := strings.Split(string(pciContents), "\n")
 
 	devices, err := filepath.Glob(filepath.Join(pciDir, "*"))
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
-	for _, devPath := range devices {
-		vendorID, err := utils.OpenFile(filepath.Join(devPath, "vendor"))
+	for _, devicePath := range devices {
+		vendorID, err := utils.OpenFile(filepath.Join(devicePath, "vendor"))
 		if err != nil {
-			continue
+			fmt.Println("Error:", err)
 		}
-		deviceID, err := utils.OpenFile(filepath.Join(devPath, "device"))
+		deviceID, err := utils.OpenFile(filepath.Join(devicePath, "device"))
 		if err != nil {
-			continue
+			fmt.Println("Error:", err)
 		}
 
 		vendorStr := strings.TrimPrefix(strings.TrimSpace(string(vendorID)), "0x")
 		deviceStr := strings.TrimPrefix(strings.TrimSpace(string(deviceID)), "0x")
 
-		classFile := filepath.Join(devPath, "class")
+		classFile := filepath.Join(devicePath, "class")
 		classData, err := utils.OpenFile(classFile)
+		if err != nil {
+			fmt.Println("Error:", err)	
+		}
 		class := strings.TrimSpace(string(classData))
 		if !strings.HasPrefix(class, "0x0300") {
 			continue
@@ -67,4 +70,3 @@ func Gpu() string {
 	}
 	return ""
 }
-

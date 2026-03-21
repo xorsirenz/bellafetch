@@ -6,7 +6,7 @@ type Data struct {
 	PrettyName string
 	Kernel     string
 	Uptime     string
-	PkgManager int
+	Packages   int
 	WM         string
 	Cpu        string
 	Gpu        string

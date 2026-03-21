@@ -64,4 +64,3 @@ func pacman() int {
 	lines := len(entries) - 1
 	return lines
 }
-
