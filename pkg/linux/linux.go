@@ -12,7 +12,7 @@ func GetLinuxData() utils.Data {
 		Kernel:     Kernel(),
 		Uptime:     Uptime(),
 		PkgManager: PkgManager(),
-		WM:			"",
+		WM:         "",
 		Cpu:        Cpu(),
 		Gpu:        Gpu(),
 		DiskSpace:  Storage(),
