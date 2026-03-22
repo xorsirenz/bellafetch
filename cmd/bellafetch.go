@@ -21,16 +21,16 @@ func checkOS() utils.Data {
 	case "linux":
 		return linux.GetLinuxData()
 	case "freebsd", "netbsd", "openbsd", "dragonfly":
-		fmt.Println("Error: Bellafetch is not capitable with any BSD derivatives right now..")
+		fmt.Println("Error: Bellafetch is not capitable with any BSD derivatives right now.")
 		os.Exit(-1)
 	case "darwin":
 		fmt.Println("Error: Bellafetch is not capitable with Darwin/Mac OSX right now..")
 		os.Exit(-1)
 	case "windows":
-		fmt.Println("Error: Bellafetch is not capitable with Windows right now..")
+		fmt.Println("Error: Bellafetch is not capitable with Windows right now.")
 		os.Exit(-1)
 	default:
-		fmt.Println("Error: Bellafetch cannot detect OS target..")
+		fmt.Println("Error: Bellafetch cannot detect OS target.")
 		os.Exit(-1)
 	}
 	return utils.Data{}
@@ -41,9 +41,9 @@ func main() {
 	data := checkOS()
 	clearScreen()
 
-	config, err := utils.LoadConfig("config.json")
+	config, err := utils.LoadConfig()
 	if err != nil {
-		panic(err)
+		fmt.Println("Error: Cannot load config file.")
 	}
 
 	contextMap := map[string]string{
