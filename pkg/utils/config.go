@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	Modules Modules `json:"Modules"`
+	Modules []Modules `json:"Modules"`
 }
 
 type Modules struct {
@@ -37,22 +37,17 @@ func LoadConfig() (map[string]bool, error) {
 		return nil, err
 	}
 
-	var configData map[string]interface{}
+	var configData struct {
+		Modules []map[string]bool `json:"Modules"`
+	}
+
 	err = json.Unmarshal(file, &configData)
 	if err != nil {
 		fmt.Errorf("Cannot unmarshal json: %w", err)
 		os.Exit(1)
 	}
 
-	moduleFlags := make(map[string]bool)
-	if nestedMap, ok := configData["Modules"].(map[string]interface{}); ok {
-		for k, v := range nestedMap {
-			if boolVal, ok := v.(bool); ok {
-				moduleFlags[k] = boolVal
-			}
-		}
-	}
-	return moduleFlags, err
+	return configData.Modules[0], nil
 }
 
 func configDirExists() (string, error) {
@@ -67,17 +62,19 @@ func configDirExists() (string, error) {
 	}
 
 	configJson := Config{
-		Modules: Modules{
-			Host:       true,
-			PrettyName: true,
-			Kernel:     true,
-			Uptime:     true,
-			Package:    true,
-			WM:         false,
-			Cpu:        true,
-			Gpu:        true,
-			DiskSpace:  true,
-			Memory:     true,
+		Modules: []Modules{
+			{
+				Host:       true,
+				PrettyName: true,
+				Kernel:     true,
+				Uptime:     true,
+				Package:    true,
+				WM:         false,
+				Cpu:        true,
+				Gpu:        true,
+				DiskSpace:  true,
+				Memory:     true,
+			},
 		},
 	}
 
