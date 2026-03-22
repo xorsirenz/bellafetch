@@ -22,3 +22,23 @@ $ make
 # move binary into your $PATH.. example:
 $ sudo mv bellafetch /usr/local/bin
  ```
+## Usage
+ ```sh
+ bellafetch
+ ```
+### Configuration
+#### Default Config:
+ ```json
+{
+  "Host": true,
+  "PrettyName": true,
+  "Kernel": true,
+  "Uptime": true,
+  "Packages": true,
+  "WM": false,
+  "Cpu": true,
+  "Gpu": true,
+  "DiskSpace": true,
+  "Memory": true
+}
+ ```
