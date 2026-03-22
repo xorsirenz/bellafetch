@@ -9,6 +9,10 @@ import (
 )
 
 type Config struct {
+	Modules Modules `json:"Modules"`
+}
+
+type Modules struct {
 	Host       bool `json:"Host"`
 	PrettyName bool `json:"PrettyName"`
 	Kernel     bool `json:"Kernel"`
@@ -24,7 +28,7 @@ type Config struct {
 func LoadConfig() (map[string]bool, error) {
 	configFile, err := configDirExists()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error %v\n", err)
+		fmt.Errorf("cannot load config: %v", err)
 		os.Exit(1)
 	}
 
@@ -33,9 +37,22 @@ func LoadConfig() (map[string]bool, error) {
 		return nil, err
 	}
 
-	var config map[string]bool
-	err = json.Unmarshal(file, &config)
-	return config, err
+	var configData map[string]interface{}
+	err = json.Unmarshal(file, &configData)
+	if err != nil {
+		fmt.Errorf("Cannot unmarshal json: %w", err)
+		os.Exit(1)
+	}
+
+	moduleFlags := make(map[string]bool)
+	if nestedMap, ok := configData["Modules"].(map[string]interface{}); ok {
+		for k, v := range nestedMap {
+			if boolVal, ok := v.(bool); ok {
+				moduleFlags[k] = boolVal
+			}
+		}
+	}
+	return moduleFlags, err
 }
 
 func configDirExists() (string, error) {
@@ -50,16 +67,18 @@ func configDirExists() (string, error) {
 	}
 
 	configJson := Config{
-		Host:       true,
-		PrettyName: true,
-		Kernel:     true,
-		Uptime:     true,
-		Package:    true,
-		WM:         false,
-		Cpu:        true,
-		Gpu:        true,
-		DiskSpace:  true,
-		Memory:     true,
+		Modules: Modules{
+			Host:       true,
+			PrettyName: true,
+			Kernel:     true,
+			Uptime:     true,
+			Package:    true,
+			WM:         false,
+			Cpu:        true,
+			Gpu:        true,
+			DiskSpace:  true,
+			Memory:     true,
+		},
 	}
 
 	configFilePath := filepath.Join(bellafetchConfigPath, "config")
@@ -75,22 +94,22 @@ func configDirExists() (string, error) {
 	return configFilePath, err
 }
 
-func PrintSelectedFields(data interface{}, config map[string]bool, contextMap map[string]string) {
+func PrintSelectedModules(data interface{}, config map[string]bool, contextMap map[string]string) {
 	val := reflect.ValueOf(data)
 	typ := reflect.TypeOf(data)
 
 	for i := range val.NumField() {
-		fieldName := typ.Field(i).Name
+		moduleName := typ.Field(i).Name
 
-		if config[fieldName] {
-			fieldValue := val.Field(i).Interface()
+		if config[moduleName] {
+			moduleValue := val.Field(i).Interface()
 
-			label := fieldName
-			if ctx, ok := contextMap[fieldName]; ok {
+			label := moduleName
+			if ctx, ok := contextMap[moduleName]; ok {
 				label = ctx
 			}
 
-			fmt.Printf("%s %v\n", label, fieldValue)
+			fmt.Printf("%s %v\n", label, moduleValue)
 		}
 	}
 }

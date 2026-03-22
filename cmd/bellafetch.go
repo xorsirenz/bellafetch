@@ -36,7 +36,6 @@ func checkOS() utils.Data {
 	return utils.Data{}
 }
 
-
 func main() {
 	data := checkOS()
 	clearScreen()
@@ -59,10 +58,11 @@ func main() {
 		"Memory":     " memory  ::",
 	}
 
-	fmt.Println("")
-	fmt.Println("	bellafetch")
-	fmt.Println("  [github : xorsirenz]")
-	fmt.Println("")
-	utils.PrintSelectedFields(data, config, contextMap)
-	fmt.Println("")
+	const banner = `
+	 bellafetch
+    [github : xorsirenz]
+	`
+
+	fmt.Println(banner)
+	utils.PrintSelectedModules(data, config, contextMap)
 }
