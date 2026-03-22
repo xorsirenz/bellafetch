@@ -27,18 +27,27 @@ $ sudo mv bellafetch /usr/local/bin
  bellafetch
  ```
 ### Configuration
+#### Config location: 
+ ```sh
+ $ ~/.config/bellafetch/config
+ ```
+
 #### Default Config:
  ```json
 {
-  "Host": true,
-  "PrettyName": true,
-  "Kernel": true,
-  "Uptime": true,
-  "Packages": true,
-  "WM": false,
-  "Cpu": true,
-  "Gpu": true,
-  "DiskSpace": true,
-  "Memory": true
+  "Modules": [
+    {
+      "Host": true,
+      "PrettyName": true,
+      "Kernel": true,
+      "Uptime": true,
+      "Packages": true,
+      "WM": false,
+      "Cpu": true,
+      "Gpu": true,
+      "DiskSpace": true,
+      "Memory": true
+    }
+  ]
 }
- ```
+```
