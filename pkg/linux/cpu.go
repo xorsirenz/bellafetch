@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/xorsirenz/bellafetch/pkg/utils"
+	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 
 func Cpu() string {

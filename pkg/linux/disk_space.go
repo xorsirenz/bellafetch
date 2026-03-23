@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"syscall"
 
-	"github.com/xorsirenz/bellafetch/pkg/utils"
+	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 func DiskSpace() string {
 	path := "/"

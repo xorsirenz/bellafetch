@@ -5,7 +5,7 @@ import (
 	"strings"
 	"os/user"
 
-	"github.com/xorsirenz/bellafetch/pkg/utils"
+	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 func Host() string {
 	hostname := Hostname()

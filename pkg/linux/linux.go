@@ -1,7 +1,7 @@
 package linux
 
 import (
-	"github.com/xorsirenz/bellafetch/pkg/utils"
+	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 
 func GetLinuxData() utils.Data {

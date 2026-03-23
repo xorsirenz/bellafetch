@@ -4,7 +4,7 @@ import (
 	"strings"
 	"fmt"
 
-	"github.com/xorsirenz/bellafetch/pkg/utils"
+	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 func OsRelease() map[string]string {
 	OsReleaseFile := "/etc/os-release"

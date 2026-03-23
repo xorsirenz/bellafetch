@@ -6,7 +6,7 @@ import (
 	"strings"
 	"strconv"
 
-	"github.com/xorsirenz/bellafetch/pkg/utils"
+	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 func Memory() string {
 	meminfoFile := "/proc/meminfo"

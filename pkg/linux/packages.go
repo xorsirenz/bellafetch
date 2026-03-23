@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/xorsirenz/bellafetch/pkg/utils"
+	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 
 func parseID(id string) string {
