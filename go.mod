@@ -1,3 +1,3 @@
 module github.com/xorsirenz/bellafetch
 
-go 1.26.1
+go 1.22.0
