@@ -20,7 +20,7 @@ endif
 all: build
 
 build: $(SOURCES)
-	CGO_ENABLED=0 go build -a -tags ${TAGS} -ldflags ${LDFLAGS} -o ${PACKAGE} ./cmd
+	CGO_ENABLED=0 go build -a -tags ${TAGS} -ldflags ${LDFLAGS} -o ${PACKAGE} ./cmd/bellafetch/
 
 clean:
 	rm -f ${PACKAGE}
