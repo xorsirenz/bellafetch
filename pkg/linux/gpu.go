@@ -2,17 +2,16 @@ package linux
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 
 func Gpu() string {
 	pciDir := "/sys/bus/pci/devices"
 	pciFile := "/usr/share/hwdata/pci.ids"
 
-	pciContents, err := utils.OpenFile(pciFile)
+	pciContents, err := os.ReadFile(pciFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
@@ -23,11 +22,11 @@ func Gpu() string {
 		fmt.Println("Error:", err)
 	}
 	for _, devicePath := range devices {
-		vendorID, err := utils.OpenFile(filepath.Join(devicePath, "vendor"))
+		vendorID, err := os.ReadFile(filepath.Join(devicePath, "vendor"))
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
-		deviceID, err := utils.OpenFile(filepath.Join(devicePath, "device"))
+		deviceID, err := os.ReadFile(filepath.Join(devicePath, "device"))
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
@@ -36,9 +35,9 @@ func Gpu() string {
 		deviceStr := strings.TrimPrefix(strings.TrimSpace(string(deviceID)), "0x")
 
 		classFile := filepath.Join(devicePath, "class")
-		classData, err := utils.OpenFile(classFile)
+		classData, err := os.ReadFile(classFile)
 		if err != nil {
-			fmt.Println("Error:", err)	
+			fmt.Println("Error:", err)
 		}
 		class := strings.TrimSpace(string(classData))
 		if !strings.HasPrefix(class, "0x0300") {

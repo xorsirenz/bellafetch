@@ -3,9 +3,8 @@ package linux
 import (
 	"fmt"
 	"strings"
+	"os"
 	"os/user"
-
-	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 func Host() string {
 	hostname := Hostname()
@@ -15,14 +14,14 @@ func Host() string {
 }
 
 func Hostname() string {
-	hostname := "/etc/hostname"
+	hostnameFile := "/etc/hostname"
 
-	hostnameContents, err := utils.OpenFile(hostname)
+	hostname, err := os.ReadFile(hostnameFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
 
-	host := strings.TrimSuffix(hostnameContents, "\n")
+	host := strings.TrimSuffix(string(hostname), "\n")
 	return host
 }
 

@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 
 func parseID(id string) string {
@@ -43,7 +41,7 @@ func PkgManager() int {
 func dpkg() int {
 	dpkgStatusFile := "/var/lib/dpkg/status"
 
-	out, err := utils.OpenFile(dpkgStatusFile)
+	out, err := os.ReadFile(dpkgStatusFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}

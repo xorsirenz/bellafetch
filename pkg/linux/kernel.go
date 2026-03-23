@@ -3,22 +3,21 @@ package linux
 import (
 	"bufio"
 	"fmt"
+	"os"
 	"regexp"
 	"strings"
-
-	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 
 func Kernel() string {
 	versionFile := "/proc/version"
 
-	contents, err := utils.OpenFile(versionFile)
+	contents, err := os.ReadFile(versionFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
 
 	kernelVersion := ""
-	scanner := bufio.NewScanner(strings.NewReader(contents))
+	scanner := bufio.NewScanner(strings.NewReader(string(contents)))
 
 	for scanner.Scan() {
 		kernelInfo := scanner.Text()

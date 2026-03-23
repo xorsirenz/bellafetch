@@ -1,20 +1,20 @@
 package linux
 
 import (
-	"strings"
 	"fmt"
-
-	"github.com/xorsirenz/bellafetch/internal/utils"
+	"os"
+	"strings"
 )
+
 func OsRelease() map[string]string {
 	OsReleaseFile := "/etc/os-release"
 
-	contents, err := utils.OpenFile(OsReleaseFile)
+	contents, err := os.ReadFile(OsReleaseFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
 
-	entries := strings.Split(contents, "\n")
+	entries := strings.Split(string(contents), "\n")
 	osMap := make(map[string]string)
 
 	for _, entry := range entries {
@@ -25,4 +25,3 @@ func OsRelease() map[string]string {
 	}
 	return osMap
 }
-

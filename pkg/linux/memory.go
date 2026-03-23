@@ -3,6 +3,7 @@ package linux
 import (
 	"bufio"
 	"fmt"
+	"os"
 	"strings"
 	"strconv"
 
@@ -11,13 +12,13 @@ import (
 func Memory() string {
 	meminfoFile := "/proc/meminfo"
 
-	contents, err := utils.OpenFile(meminfoFile)
+	contents, err := os.ReadFile(meminfoFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
 
 	var memTotal, memAvailable uint64
-	scanner := bufio.NewScanner(strings.NewReader(contents))
+	scanner := bufio.NewScanner(strings.NewReader(string(contents)))
 	for scanner.Scan() {
 		memInfo := scanner.Text()
 		if strings.HasPrefix(memInfo, "MemTotal:") {

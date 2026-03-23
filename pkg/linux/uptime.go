@@ -2,17 +2,16 @@ package linux
 
 import (
 	"fmt"
-	"strings"
+	"os"
 	"strconv"
+	"strings"
 	"time"
-
-	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 
 func Uptime() string {
 	uptimeFile := "/proc/uptime"
 
-	data, err := utils.OpenFile(uptimeFile)
+	data, err := os.ReadFile(uptimeFile)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
