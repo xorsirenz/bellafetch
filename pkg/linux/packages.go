@@ -1,8 +1,10 @@
 package linux
 
 import (
+	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -31,6 +33,9 @@ func PkgManager() int {
 		return pkgs
 	case "debian", "linuxmint", "ubuntu":
 		pkgs := dpkg()
+		return pkgs
+	case "void":
+		pkgs := xbps()
 		return pkgs
 	default:
 		fmt.Println("No supported package manager detected")
@@ -61,4 +66,39 @@ func pacman() int {
 	}
 	lines := len(entries) - 1
 	return lines
+}
+
+func xbps() int {
+	rootDir := "/var/db/xbps/"
+	pkgdbFilePrefix := "pkgdb-"
+
+	entries, err := os.ReadDir(rootDir)
+	if err != nil {
+		fmt.Println("Error", err)
+	}
+
+	var pkgdbFile string
+	for _, entry := range entries {
+		if !entry.IsDir() && strings.HasPrefix(entry.Name(), pkgdbFilePrefix) {
+			pkgdbFile = filepath.Join(rootDir, entry.Name())
+		}
+	}
+
+	file, err := os.Open(pkgdbFile)
+	if err != nil {
+		fmt.Println("Error", err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+
+	installed := "<string>installed</string>"
+	count := 0
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		count += strings.Count(line, installed)
+	}
+	return count
 }
