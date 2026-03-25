@@ -6,6 +6,7 @@ type Data struct {
 	Kernel     string
 	Uptime     string
 	Packages   int
+	Shell	   string
 	WM         string
 	Cpu        string
 	Gpu        string

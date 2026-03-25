@@ -11,6 +11,7 @@ func GetLinuxData() utils.Data {
 		Kernel:     Kernel(),
 		Uptime:     Uptime(),
 		Packages:   PkgManager(),
+		Shell:		Shell(),
 		WM:         "",
 		Cpu:        Cpu(),
 		Gpu:        Gpu(),

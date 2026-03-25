@@ -37,25 +37,25 @@ func checkOS() utils.Data {
 }
 
 func main() {
-	data := checkOS()
-	clearScreen()
-
 	config, err := utils.LoadConfig()
 	if err != nil {
 		fmt.Println("Error: Cannot load config file.")
 	}
-
+	
+	data := checkOS()
+	
 	contextMap := map[string]string{
-		"Host":       "  host    ::",
-		"PrettyName": "  os      ::",
-		"Kernel":     "  ver     ::",
-		"Uptime":     "  uptime  ::",
-		"Packages":   "  pkgs    ::",
-		"WM":         "  wm      ::",
-		"Cpu":        "  cpu     ::",
-		"Gpu":        "  gpu     ::",
-		"DiskSpace":  "  storage ::",
-		"Memory":     " memory  ::",
+		"Host":       "   host    ::",
+		"PrettyName": "   os      ::",
+		"Kernel":     "   ver     ::",
+		"Uptime":     "   uptime  ::",
+		"Packages":   "   pkgs    ::",
+		"Shell":	  "   shell   ::",
+		"WM":         "   wm      ::",
+		"Cpu":        "   cpu     ::",
+		"Gpu":        "   gpu     ::",
+		"DiskSpace":  "   storage ::",
+		"Memory":     "  memory  ::",
 	}
 
 	const banner = `
@@ -63,6 +63,7 @@ func main() {
     [github : xorsirenz]
 	`
 
+	clearScreen()
 	fmt.Println(banner)
 	utils.PrintSelectedModules(data, config, contextMap)
 }
