@@ -92,21 +92,21 @@ func configDirExists() (string, error) {
 }
 
 func PrintSelectedModules(data interface{}, config map[string]bool, contextMap map[string]string) {
-	val := reflect.ValueOf(data)
-	typ := reflect.TypeOf(data)
+	dataValue := reflect.ValueOf(data)
+	dataType := reflect.TypeOf(data)
 
-	for i := range val.NumField() {
-		moduleName := typ.Field(i).Name
+	for i := range dataValue.NumField() {
+		moduleName := dataType.Field(i).Name
 
 		if config[moduleName] {
-			moduleValue := val.Field(i).Interface()
+			moduleValue := dataValue.Field(i).Interface()
 
-			label := moduleName
+			ModuleLabel := moduleName
 			if ctx, ok := contextMap[moduleName]; ok {
-				label = ctx
+				ModuleLabel = ctx
 			}
 
-			fmt.Printf("%s %v\n", label, moduleValue)
+			fmt.Printf("%s %v\n", ModuleLabel, moduleValue)
 		}
 	}
 }
