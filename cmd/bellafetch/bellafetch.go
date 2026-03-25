@@ -51,6 +51,7 @@ func main() {
 		"Uptime":     "   uptime  ::",
 		"Packages":   "   pkgs    ::",
 		"Shell":	  "   shell   ::",
+		"Terminal":	  "   term    ::",
 		"WM":         "   wm      ::",
 		"Cpu":        "   cpu     ::",
 		"Gpu":        "   gpu     ::",
