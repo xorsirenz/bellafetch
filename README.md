@@ -5,7 +5,7 @@
 ![](https://github.com/xorsirenz/bellafetch/blob/main/ss.png?raw=true)
 
 ## Requirements:
-- \>= [golang v1.26.1](https://go.dev/)
+- \>= [golang v1.22.0](https://go.dev/)
 
 ##  Installation:
 ### Build from source
