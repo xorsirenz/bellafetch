@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
 	"strconv"
+	"strings"
 
 	"github.com/xorsirenz/bellafetch/internal/utils"
 )
+
 func Memory() string {
 	meminfoFile := "/proc/meminfo"
 
