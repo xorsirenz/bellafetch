@@ -17,6 +17,8 @@ type Modules struct {
 	Kernel     bool `json:"Kernel"`
 	Uptime     bool `json:"Uptime"`
 	Package    bool `json:"Packages"`
+	Shell	   bool `json:"Shell"`
+	Terminal   bool `json:"Terminal"`
 	WM         bool `json:"WM"`
 	Cpu        bool `json:"Cpu"`
 	Gpu        bool `json:"Gpu"`
@@ -62,12 +64,15 @@ func configDirExists() (string, error) {
 
 	configJson := Config{
 		Modules: []Modules{
+
 			{
 				Host:       true,
 				PrettyName: true,
 				Kernel:     true,
 				Uptime:     true,
 				Package:    true,
+				Shell:		true,
+				Terminal:	true,
 				WM:         false,
 				Cpu:        true,
 				Gpu:        true,
