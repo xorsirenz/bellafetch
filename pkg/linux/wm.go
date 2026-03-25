@@ -11,7 +11,7 @@ import (
 func Wm() string {
 	rootDir := "/proc"
 
-	supportedWms := []string {
+	supportedWms := []string{
 		"i3",
 		"awesome",
 		"bspwn",
@@ -30,15 +30,15 @@ func Wm() string {
 	}
 
 	for _, entry := range entries {
-		if !entry.IsDir()  || !numericDirRegex.MatchString(entry.Name()){
-			continue
+		if !entry.IsDir() || !numericDirRegex.MatchString(entry.Name()) {
+			fmt.Println("Error cannot walk proc")
 		}
 
 		pidname := entry.Name()
 		commPath := filepath.Join(rootDir, pidname, "comm")
 		data, err := os.ReadFile(commPath)
 		if err != nil {
-			continue
+			fmt.Printf("Error cannot read file: %v", commPath)
 		}
 
 		commFile := strings.TrimSpace(string(data))
