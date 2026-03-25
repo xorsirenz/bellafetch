@@ -44,7 +44,7 @@ $ sudo mv bellafetch /usr/local/bin
       "Packages": true,
       "Shell": true,
       "Terminal": true,
-      "WM": false,
+      "WM": true,
       "Cpu": true,
       "Gpu": true,
       "DiskSpace": true,
