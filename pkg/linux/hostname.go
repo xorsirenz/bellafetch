@@ -9,7 +9,7 @@ import (
 func Host() string {
 	hostname := Hostname()
 	username := Username()
-	host := hostname + "@" + username
+	host := username + "@" + hostname
 	return host
 }
 
