@@ -73,7 +73,7 @@ func configDirExists() (string, error) {
 				Package:    true,
 				Shell:		true,
 				Terminal:	true,
-				WM:         false,
+				WM:         true,
 				Cpu:        true,
 				Gpu:        true,
 				DiskSpace:  true,
