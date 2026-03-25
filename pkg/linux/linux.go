@@ -13,7 +13,7 @@ func GetLinuxData() utils.Data {
 		Packages:   PkgManager(),
 		Shell:		Shell(),
 		Terminal:	Terminal(),
-		WM:         "",
+		WM:         Wm(),
 		Cpu:        Cpu(),
 		Gpu:        Gpu(),
 		DiskSpace:  DiskSpace(),
