@@ -2,7 +2,7 @@
 <pre><code>minimal system information gathering tool<br></code></pre>
 
 
-![](https://github.com/xorsirenz/bellafetch/blob/main/ss.png?raw=true)
+![](https://github.com/xorsirenz/bellafetch/blob/main/assets/screenshot-default-config.png?raw=true)
 
 ## Requirements:
 - \>= [golang v1.22.0](https://go.dev/)
