@@ -52,9 +52,8 @@ func flatpak() string {
 	flatpakTotal := appTotal + runtimeTotal
 	if flatpakTotal != 0 {
 		return fmt.Sprintf("%d (flatpak)", flatpakTotal)
-	} else {
-		return ""
 	}
+	return ""
 }
 
 func flatpakApps() int {
