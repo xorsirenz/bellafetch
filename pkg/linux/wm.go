@@ -1,7 +1,6 @@
 package linux
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -26,19 +25,19 @@ func Wm() string {
 
 	entries, err := os.ReadDir(rootDir)
 	if err != nil {
-		fmt.Printf("Error readinging file: %v", err)
+		return ""
 	}
 
 	for _, entry := range entries {
 		if !entry.IsDir() || !numericDirRegex.MatchString(entry.Name()) {
-			fmt.Println("Error cannot walk proc")
+			continue
 		}
 
 		pidname := entry.Name()
 		commPath := filepath.Join(rootDir, pidname, "comm")
 		data, err := os.ReadFile(commPath)
 		if err != nil {
-			fmt.Printf("Error cannot read file: %v", commPath)
+			continue
 		}
 
 		commFile := strings.TrimSpace(string(data))
