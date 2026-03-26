@@ -57,7 +57,7 @@ func flatpak() string {
 }
 
 func flatpakApps() int {
-	appDir := "var/lib/flatpak/app/"
+	appDir := "/var/lib/flatpak/app/"
 
 	entries, err := os.ReadDir(appDir)
 	if err != nil {
