@@ -5,7 +5,7 @@ type Data struct {
 	PrettyName string
 	Kernel     string
 	Uptime     string
-	Packages   int
+	Packages   string
 	Shell	   string
 	Terminal   string
 	WM         string

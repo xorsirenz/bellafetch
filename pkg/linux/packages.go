@@ -16,7 +16,7 @@ func parseID(id string) string {
 	return id
 }
 
-func PkgManager() int {
+func PkgManager() string {
 	osInfo := OsRelease()
 	id := osInfo["ID_LIKE"]
 
@@ -40,10 +40,10 @@ func PkgManager() int {
 	default:
 		fmt.Println("No supported package manager detected")
 	}
-	return 0
+	return ""
 }
 
-func dpkg() int {
+func dpkg() string {
 	dpkgStatusFile := "/var/lib/dpkg/status"
 
 	out, err := os.ReadFile(dpkgStatusFile)
@@ -54,10 +54,10 @@ func dpkg() int {
 	output := string(out)
 	outputLines := strings.Split(output, "\n\n")
 	lines := len(outputLines) - 1
-	return lines
+	return fmt.Sprintf("%d (dpkg)", lines)
 }
 
-func pacman() int {
+func pacman() string {
 	packages := "/var/lib/pacman/local"
 
 	entries, err := os.ReadDir(packages)
@@ -65,10 +65,10 @@ func pacman() int {
 		fmt.Println("Error", err)
 	}
 	lines := len(entries) - 1
-	return lines
+	return fmt.Sprintf("%d (pacman)", lines)
 }
 
-func xbps() int {
+func xbps() string {
 	rootDir := "/var/db/xbps/"
 	pkgdbFilePrefix := "pkgdb-"
 
@@ -100,5 +100,5 @@ func xbps() int {
 		line := scanner.Text()
 		count += strings.Count(line, installed)
 	}
-	return count
+	return fmt.Sprintf("%d (xbps)", count)
 }
