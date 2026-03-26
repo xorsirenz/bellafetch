@@ -38,7 +38,8 @@ func PkgManager() string {
 		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	case "void":
 		pkgs := xbps()
-		return pkgs
+		flatpaks := flatpak()
+		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	default:
 		fmt.Println("No supported package manager detected")
 	}
