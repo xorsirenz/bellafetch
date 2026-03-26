@@ -30,10 +30,12 @@ func PkgManager() string {
 	switch id {
 	case "arch", "manjaro":
 		pkgs := pacman()
-		return pkgs
+		flatpaks := flatpak()
+		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	case "debian", "linuxmint", "ubuntu":
 		pkgs := dpkg()
-		return pkgs
+		flatpaks := flatpak()
+		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	case "void":
 		pkgs := xbps()
 		return pkgs
@@ -41,6 +43,57 @@ func PkgManager() string {
 		fmt.Println("No supported package manager detected")
 	}
 	return ""
+}
+
+func flatpak() string {
+	appTotal := flatpakApps()
+	runtimeTotal := flatpakRuntimes()
+	flatpakTotal := appTotal + runtimeTotal
+	if flatpakTotal != 0 {
+		return fmt.Sprintf("%d (flatpak)", flatpakTotal)
+	} else {
+		return ""
+	}
+}
+
+func flatpakApps() int {
+	appDir := "var/lib/flatpak/app/"
+
+	entries, err := os.ReadDir(appDir)
+	if err != nil {
+		return 0
+	}
+
+	count := 0
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+
+		appName := entry.Name()
+		currentPath := filepath.Join(appDir, appName, "current")
+		if strings.HasSuffix(currentPath, "current") {
+			count ++
+		}
+	}
+	return count
+}
+
+func flatpakRuntimes() int {
+	runtimeDir := "/var/lib/flatpak/runtime/"
+
+	entries, err := os.ReadDir(runtimeDir)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	count := 0
+	for _, entry := range(entries) {
+		if !entry.IsDir() && !strings.HasSuffix(entry.Name(), ".Locale") || !strings.HasSuffix(entry.Name(), ".Debug") {
+			count ++
+		}
+	}
+	return count
 }
 
 func dpkg() string {
@@ -58,9 +111,9 @@ func dpkg() string {
 }
 
 func pacman() string {
-	packages := "/var/lib/pacman/local"
+	rootDir := "/var/lib/pacman/local"
 
-	entries, err := os.ReadDir(packages)
+	entries, err := os.ReadDir(rootDir)
 	if err != nil {
 		fmt.Println("Error", err)
 	}
