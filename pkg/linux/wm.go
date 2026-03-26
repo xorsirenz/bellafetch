@@ -33,8 +33,8 @@ func Wm() string {
 			continue
 		}
 
-		pidname := entry.Name()
-		commPath := filepath.Join(rootDir, pidname, "comm")
+		pidName := entry.Name()
+		commPath := filepath.Join(rootDir, pidName, "comm")
 		data, err := os.ReadFile(commPath)
 		if err != nil {
 			continue
