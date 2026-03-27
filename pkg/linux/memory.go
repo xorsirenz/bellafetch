@@ -15,7 +15,7 @@ func Memory() string {
 
 	contents, err := os.ReadFile(meminfoFile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Errorf("Error:", err)
 	}
 
 	var memTotal, memAvailable uint64

@@ -13,22 +13,22 @@ func Gpu() string {
 
 	pciContents, err := os.ReadFile(pciFile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Errorf("Error:", err)
 	}
 	idsLines := strings.Split(string(pciContents), "\n")
 
 	devices, err := filepath.Glob(filepath.Join(pciDir, "*"))
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Errorf("Error:", err)
 	}
 	for _, devicePath := range devices {
 		vendorID, err := os.ReadFile(filepath.Join(devicePath, "vendor"))
 		if err != nil {
-			fmt.Println("Error:", err)
+			fmt.Errorf("Error:", err)
 		}
 		deviceID, err := os.ReadFile(filepath.Join(devicePath, "device"))
 		if err != nil {
-			fmt.Println("Error:", err)
+			fmt.Errorf("Error:", err)
 		}
 
 		vendorStr := strings.TrimPrefix(strings.TrimSpace(string(vendorID)), "0x")
@@ -37,7 +37,7 @@ func Gpu() string {
 		classFile := filepath.Join(devicePath, "class")
 		classData, err := os.ReadFile(classFile)
 		if err != nil {
-			fmt.Println("Error:", err)
+			fmt.Errorf("Error:", err)
 		}
 		class := strings.TrimSpace(string(classData))
 		if !strings.HasPrefix(class, "0x0300") {
