@@ -26,19 +26,18 @@ func PkgManager() string {
 	if len(id) > 1 {
 		id = parseID(id)
 	}
+		
+	flatpaks := flatpak()
 
 	switch id {
 	case "arch", "manjaro":
 		pkgs := pacman()
-		flatpaks := flatpak()
 		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	case "debian", "linuxmint", "ubuntu":
 		pkgs := dpkg()
-		flatpaks := flatpak()
 		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	case "void":
 		pkgs := xbps()
-		flatpaks := flatpak()
 		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	default:
 		fmt.Println("No supported package manager detected")
