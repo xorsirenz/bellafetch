@@ -83,7 +83,7 @@ func flatpakRuntimes() int {
 
 	entries, err := os.ReadDir(runtimeDir)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Errorf("Error:", err)
 	}
 
 	count := 0
@@ -100,7 +100,7 @@ func dpkg() string {
 
 	out, err := os.ReadFile(dpkgStatusFile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Errorf("Error:", err)
 	}
 
 	output := string(out)
@@ -114,7 +114,7 @@ func pacman() string {
 
 	entries, err := os.ReadDir(rootDir)
 	if err != nil {
-		fmt.Println("Error", err)
+		fmt.Errorf("Error", err)
 	}
 	lines := len(entries) - 1
 	return fmt.Sprintf("%d (pacman)", lines)
@@ -126,7 +126,7 @@ func xbps() string {
 
 	entries, err := os.ReadDir(rootDir)
 	if err != nil {
-		fmt.Println("Error", err)
+		fmt.Errorf("Error", err)
 	}
 
 	var pkgdbFile string
