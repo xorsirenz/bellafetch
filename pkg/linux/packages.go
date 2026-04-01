@@ -105,7 +105,7 @@ func nixos() string {
 
 	entries, err := os.ReadDir(rootDir)
 	if err != nil {
-		fmt.Println("Error %r", err)
+		_ = fmt.Errorf("Error %v", err)
 	}
 	lines := len(entries) - 1
 	return fmt.Sprintf("%d (nixos)", lines)
