@@ -15,7 +15,6 @@ func Wm() string {
 		"awesome",
 		"bspwn",
 		"dwm",
-		"Xwayland",
 		"hyprland",
 		"openbox",
 		"river",
