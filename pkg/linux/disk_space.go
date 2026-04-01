@@ -11,7 +11,7 @@ func DiskSpace() string {
 	var fs syscall.Statfs_t
 	err := syscall.Statfs(path, &fs)
 	if err != nil {
-		fmt.Println("Error:", err)
+		_ = fmt.Errorf("Error: %v", err)
 	}
 	total := fs.Blocks * uint64(fs.Bsize)
 	free := fs.Bfree * uint64(fs.Bsize)

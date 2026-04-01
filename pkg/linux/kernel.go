@@ -13,7 +13,7 @@ func Kernel() string {
 
 	contents, err := os.ReadFile(versionFile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		_ = fmt.Errorf("Error: %v", err)
 	}
 
 	kernelVersion := ""

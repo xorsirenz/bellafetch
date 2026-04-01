@@ -11,7 +11,7 @@ func OsRelease() map[string]string {
 
 	contents, err := os.ReadFile(OsReleaseFile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		_ = fmt.Errorf("Error: %v", err)
 	}
 
 	osMap := make(map[string]string)

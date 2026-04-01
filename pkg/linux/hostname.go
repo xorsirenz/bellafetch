@@ -18,7 +18,7 @@ func Hostname() string {
 
 	hostname, err := os.ReadFile(hostnameFile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		_ = fmt.Errorf("Error: %v", err)
 	}
 
 	host := strings.TrimSuffix(string(hostname), "\n")
@@ -28,7 +28,7 @@ func Hostname() string {
 func Username() string {
 	user, err := user.Current()
 	if err != nil {
-		fmt.Println("Error:", err)
+		_ = fmt.Errorf("Error: %v", err)
 	}
 	return user.Username
 }

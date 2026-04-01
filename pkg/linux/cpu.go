@@ -13,7 +13,7 @@ func Cpu() string {
 
 	contents, err := os.ReadFile(cpuinfoFile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		_ = fmt.Errorf("Error: %v", err)
 	}
 
 	var cpuVersion string

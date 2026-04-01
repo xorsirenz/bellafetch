@@ -29,7 +29,7 @@ type Modules struct {
 func LoadConfig() (map[string]bool, error) {
 	configFile, err := configDirExists()
 	if err != nil {
-		fmt.Errorf("cannot load config: %v", err)
+		_ = fmt.Errorf("cannot load config: %v", err)
 		os.Exit(1)
 	}
 
@@ -44,7 +44,7 @@ func LoadConfig() (map[string]bool, error) {
 
 	err = json.Unmarshal(file, &configData)
 	if err != nil {
-		fmt.Errorf("Cannot unmarshal json: %w", err)
+		_ = fmt.Errorf("Cannot unmarshal json: %w", err)
 		os.Exit(1)
 	}
 

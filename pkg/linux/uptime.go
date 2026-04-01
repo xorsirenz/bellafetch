@@ -13,17 +13,17 @@ func Uptime() string {
 
 	data, err := os.ReadFile(uptimeFile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		_ = fmt.Errorf("Error: %v", err)
 	}
 
 	fields := strings.Fields(string(data))
 	if len(fields) < 1 {
-		fmt.Println("Error:", err)
+		_ = fmt.Errorf("Error: %v", err)
 	}
 
 	seconds, err := strconv.ParseFloat(fields[0], 64)
 	if err != nil {
-		fmt.Println("Error:", err)
+		_ = fmt.Errorf("Error: %v", err)
 	}
 
 	realtime := time.Duration(seconds) * time.Second
