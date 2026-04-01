@@ -14,10 +14,9 @@ func OsRelease() map[string]string {
 		fmt.Println("Error:", err)
 	}
 
-	entries := strings.Split(string(contents), "\n")
 	osMap := make(map[string]string)
 
-	for _, entry := range entries {
+	for _, entry := range strings.Split(string(contents), "\n") {
 		parts := strings.Split(entry, "=")
 		if len(parts) == 2 {
 			osMap[parts[0]] = parts[1]
