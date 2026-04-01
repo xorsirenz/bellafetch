@@ -20,13 +20,13 @@ func PkgManager() string {
 	osInfo := OsRelease()
 	id := osInfo["ID_LIKE"]
 
-	if id == "" {
+	if id == "" || id == "\"\"" {
 		id = osInfo["ID"]
 	}
 	if len(id) > 1 {
 		id = parseID(id)
 	}
-		
+
 	flatpaks := flatpak()
 
 	switch id {
@@ -41,6 +41,9 @@ func PkgManager() string {
 		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	case "rhel":
 		return fmt.Sprintf("%s", flatpaks)
+	case "nixos":
+		pkgs := nixos()
+		return fmt.Sprintf("%s", pkgs)
 	default:
 		fmt.Println("No supported package manager detected")
 	}
@@ -74,7 +77,7 @@ func flatpakApps() int {
 		appName := entry.Name()
 		currentPath := filepath.Join(appDir, appName, "current")
 		if strings.HasSuffix(currentPath, "current") {
-			count ++
+			count++
 		}
 	}
 	return count
@@ -89,12 +92,23 @@ func flatpakRuntimes() int {
 	}
 
 	count := 0
-	for _, entry := range(entries) {
+	for _, entry := range entries {
 		if !entry.IsDir() && !strings.HasSuffix(entry.Name(), ".Locale") || !strings.HasSuffix(entry.Name(), ".Debug") {
-			count ++
+			count++
 		}
 	}
 	return count
+}
+
+func nixos() string {
+	rootDir := "/run/current-system/sw/bin"
+
+	entries, err := os.ReadDir(rootDir)
+	if err != nil {
+		fmt.Println("Error %r", err)
+	}
+	lines := len(entries) - 1
+	return fmt.Sprintf("%d (nixos)", lines)
 }
 
 func dpkg() string {
