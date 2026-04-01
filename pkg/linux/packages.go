@@ -43,7 +43,7 @@ func PkgManager() string {
 		return fmt.Sprintf("%s", flatpaks)
 	case "nixos":
 		pkgs := nixos()
-		return fmt.Sprintf("%s", pkgs)
+		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	default:
 		fmt.Println("No supported package manager detected")
 	}
