@@ -3,7 +3,7 @@ package linux
 import (
 	"os"
 	"path/filepath"
-	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -15,13 +15,12 @@ func Wm() string {
 		"awesome",
 		"bspwn",
 		"dwm",
+		"Xwayland",
 		"hyprland",
 		"openbox",
 		"river",
 		"sway",
 	}
-
-	numericDirRegex := regexp.MustCompile(`^\d`)
 
 	entries, err := os.ReadDir(rootDir)
 	if err != nil {
@@ -29,11 +28,15 @@ func Wm() string {
 	}
 
 	for _, entry := range entries {
-		if !entry.IsDir() || !numericDirRegex.MatchString(entry.Name()) {
+		if !entry.IsDir() {
 			continue
 		}
 
 		pidName := entry.Name()
+		if _, err := strconv.Atoi(pidName); err != nil {
+			continue
+		}
+
 		commPath := filepath.Join(rootDir, pidName, "comm")
 		data, err := os.ReadFile(commPath)
 		if err != nil {
