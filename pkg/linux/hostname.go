@@ -7,10 +7,12 @@ import (
 	"os/user"
 )
 func Host() string {
-	hostname := Hostname()
-	username := Username()
-	host := username + "@" + hostname
-	return host
+	var host strings.Builder
+	host.WriteString(Hostname())
+	host.WriteString("@")
+	host.WriteString(Username())
+
+	return host.String()
 }
 
 func Hostname() string {
