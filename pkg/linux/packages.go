@@ -19,7 +19,7 @@ func parseID(id string) string {
 func PkgManager(osMap map[string]string) string {
 	id := osMap["ID_LIKE"]
 
-	if id == "" || id == "\"\"" {
+	if id == "" {
 		id = osMap["ID"]
 	}
 	if len(id) > 1 {
