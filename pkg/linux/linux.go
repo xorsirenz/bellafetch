@@ -1,16 +1,21 @@
 package linux
 
 import (
+	//"strings"
+
 	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 
 func GetLinuxData() utils.Data {
+
+	osMap := OsRelease()
+
 	return utils.Data{
 		Host:   	Host(),
-		PrettyName: PrettyName(),
+		PrettyName: osMap["PRETTY_NAME"],
 		Kernel:     Kernel(),
 		Uptime:     Uptime(),
-		Packages:   PkgManager(),
+		Packages:   PkgManager(osMap),
 		Shell:		Shell(),
 		Terminal:	Terminal(),
 		WM:         Wm(),
