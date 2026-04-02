@@ -27,10 +27,6 @@ func Wm() string {
 	}
 
 	for _, entry := range entries {
-		if !entry.IsDir() {
-			continue
-		}
-
 		pidName := entry.Name()
 		if _, err := strconv.Atoi(pidName); err != nil {
 			continue
