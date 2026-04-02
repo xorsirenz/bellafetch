@@ -16,6 +16,7 @@ func Wm() string {
 		"bspwn",
 		"dwm",
 		"hyprland",
+		"niri"
 		"openbox",
 		"river",
 		"sway",
