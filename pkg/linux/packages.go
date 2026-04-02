@@ -16,12 +16,11 @@ func parseID(id string) string {
 	return id
 }
 
-func PkgManager() string {
-	osInfo := OsRelease()
-	id := osInfo["ID_LIKE"]
+func PkgManager(osMap map[string]string) string {
+	id := osMap["ID_LIKE"]
 
 	if id == "" || id == "\"\"" {
-		id = osInfo["ID"]
+		id = osMap["ID"]
 	}
 	if len(id) > 1 {
 		id = parseID(id)
