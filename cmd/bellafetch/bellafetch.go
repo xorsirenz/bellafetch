@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/xorsirenz/bellafetch/internal/utils"
 	"github.com/xorsirenz/bellafetch/pkg"
 )
@@ -10,10 +8,7 @@ import (
 var version string
 
 func main() {
-	config, err := utils.LoadConfig()
-	if err != nil {
-		fmt.Println("Error: Cannot load config file.")
-	}
+	config := utils.LoadConfig()
 	data := pkg.CheckOS()
 
 	utils.ClearScreen()
