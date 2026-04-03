@@ -7,9 +7,24 @@ import (
 	"strings"
 )
 
+var CUSTOM_PCI_IDS_PATH = ""
+var CUSTOM_AMDGPU_IDS_PATH = ""
+
+func resolvePciIDsPath() string {
+	if p := os.Getenv("CUSTOM_PCI_IDS_PATH"); p != "" {
+		return p
+	}
+
+	if CUSTOM_PCI_IDS_PATH != "" {
+		return CUSTOM_PCI_IDS_PATH
+	}
+
+	return "/usr/share/hwdata/pci.ids"
+}
+
 func Gpu() string {
 	pciDir := "/sys/bus/pci/devices"
-	pciFile := "/usr/share/hwdata/pci.ids"
+	pciFile := resolvePciIDsPath()
 
 	pciContents, err := os.ReadFile(pciFile)
 	if err != nil {

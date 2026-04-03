@@ -2,3 +2,4 @@ bellafetch
 !*/
 *.json
 .direnv
+result
