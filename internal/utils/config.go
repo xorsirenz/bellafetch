@@ -58,7 +58,7 @@ func configDirExists() (string, error) {
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		createDefaultConfig(configPath)
 	}
-	return configPath, nil
+	return configPath, err
 }
 
 func getConfigPath() (string, error) {
@@ -66,7 +66,7 @@ func getConfigPath() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("Failed to find user config directory: %w", err)
 	}
-	return filepath.Join(userConfigDir, "bellafetch", "config"), nil
+	return filepath.Join(userConfigDir, "bellafetch", "config"), err
 }
 
 func createDefaultConfig(configPath string) error {
