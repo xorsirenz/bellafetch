@@ -22,7 +22,6 @@ func HandleCmd(version string) {
 Operations:
 	bellafetch {-help}
 	bellafetch {-version}`)
-		//flag.PrintDefaults()
 		os.Exit(0)
 	}
 }
