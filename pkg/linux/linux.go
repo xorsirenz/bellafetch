@@ -1,8 +1,6 @@
 package linux
 
 import (
-	//"strings"
-
 	"github.com/xorsirenz/bellafetch/internal/utils"
 )
 
