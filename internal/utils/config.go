@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -17,7 +18,7 @@ type Modules struct {
 	Kernel     bool `json:"Kernel"`
 	Uptime     bool `json:"Uptime"`
 	Package    bool `json:"Packages"`
-	Shell	   bool `json:"Shell"`
+	Shell      bool `json:"Shell"`
 	Terminal   bool `json:"Terminal"`
 	WM         bool `json:"WM"`
 	Cpu        bool `json:"Cpu"`
@@ -26,16 +27,15 @@ type Modules struct {
 	Memory     bool `json:"Memory"`
 }
 
-func LoadConfig() (map[string]bool, error) {
+func LoadConfig() map[string]bool {
 	configFile, err := configDirExists()
 	if err != nil {
-		_ = fmt.Errorf("cannot load config: %v", err)
-		os.Exit(1)
+		log.Fatalf("cannot load config: %v", err)
 	}
 
 	file, err := os.ReadFile(configFile)
 	if err != nil {
-		return nil, err
+		log.Fatalf("cannot read config: %v", err)
 	}
 
 	var configData struct {
@@ -44,24 +44,33 @@ func LoadConfig() (map[string]bool, error) {
 
 	err = json.Unmarshal(file, &configData)
 	if err != nil {
-		_ = fmt.Errorf("Cannot unmarshal json: %w", err)
-		os.Exit(1)
+		log.Fatalf("Cannot unmarshal json: %v", err)
 	}
 
-	return configData.Modules[0], nil
+	return configData.Modules[0]
 }
 
 func configDirExists() (string, error) {
-	configDir, err := os.UserConfigDir()
+	configPath, err := getConfigPath()
+	if err != nil {
+		return "", err
+	}
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		createDefaultConfig(configPath)
+	}
+	return configPath, nil
+}
+
+func getConfigPath() (string, error) {
+	userConfigDir, err := os.UserConfigDir()
 	if err != nil {
 		return "", fmt.Errorf("Failed to find user config directory: %w", err)
 	}
-	bellafetchConfigPath := filepath.Join(configDir, "bellafetch")
+	return filepath.Join(userConfigDir, "bellafetch", "config"), nil
+}
 
-	if err := os.MkdirAll(bellafetchConfigPath, 0755); err != nil {
-		return "", fmt.Errorf("Failed to create config directory: %w", err)
-	}
-
+func createDefaultConfig(configPath string) error {
+	configDir := filepath.Dir(configPath)
 	configJson := Config{
 		Modules: []Modules{
 
@@ -71,8 +80,8 @@ func configDirExists() (string, error) {
 				Kernel:     true,
 				Uptime:     true,
 				Package:    true,
-				Shell:		true,
-				Terminal:	true,
+				Shell:      true,
+				Terminal:   true,
 				WM:         true,
 				Cpu:        true,
 				Gpu:        true,
@@ -82,15 +91,16 @@ func configDirExists() (string, error) {
 		},
 	}
 
-	configFilePath := filepath.Join(bellafetchConfigPath, "config")
-	if _, err := os.Stat(configFilePath); os.IsNotExist(err) {
-		defaultConfigData, err := json.MarshalIndent(configJson, "", "  ")
-		if err != nil {
-			return "", fmt.Errorf("Failed to Marshal config file: %w", err)
-		}
-		if err := os.WriteFile(configFilePath, defaultConfigData, 0644); err != nil {
-			return "", fmt.Errorf("Failed to write default config file: %w", err)
-		}
+	if err := os.MkdirAll(configDir, 0755); err != nil {
+		return fmt.Errorf("Failed to create config directory: %w", err)
 	}
-	return configFilePath, err
+
+	defaultConfigData, err := json.MarshalIndent(configJson, "", "  ")
+	if err != nil {
+		return fmt.Errorf("Failed to Marshal config file: %w", err)
+	}
+	if err := os.WriteFile(configPath, defaultConfigData, 0644); err != nil {
+		return fmt.Errorf("Failed to write default config file: %w", err)
+	}
+	return err
 }
