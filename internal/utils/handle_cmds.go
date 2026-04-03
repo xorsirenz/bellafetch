@@ -7,8 +7,10 @@ import (
 )
 
 func HandleCmd(version string) {
-	vFlag := flag.Bool("version", false, "Print version")
 	hFlag := flag.Bool("help", false, "Show help")
+	vFlag := flag.Bool("version", false, "Print version")
+	flag.BoolVar(hFlag, "h", *hFlag, "alias for -help")
+	flag.BoolVar(vFlag, "v", *vFlag, "alias for -version")
 	flag.Parse()
 
 	if *vFlag {
@@ -20,8 +22,8 @@ func HandleCmd(version string) {
 	bellafetch
 
 Operations:
-	bellafetch {-help}
-	bellafetch {-version}`)
+	bellafetch {-h -help}
+	bellafetch {-h -version}`)
 		os.Exit(0)
 	}
 }
