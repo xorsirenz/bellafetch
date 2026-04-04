@@ -9,8 +9,8 @@
       package = pkgs: let
         version = self.rev or self.dirtyRev or "dev";
         pciIds = "${pkgs.hwdata}/share/hwdata/pci.ids";
-        amdgpuIds = "${pkgs.libdrm}/share/libdrm/amdgpu.ids";
-        extraLdflags = "-X github.com/xorsirenz/bellafetch/pkg/linux.CUSTOM_PCI_IDS_PATH=${pciIds} -X github.com/xorsirenz/bellafetch/pkg/linux.CUSTOM_AMDGPU_IDS_PATH=${amdgpuIds}";
+				# leaves room for more flags
+        extraLdflags = "-X github.com/xorsirenz/bellafetch/pkg/linux.CUSTOM_PCI_IDS_PATH=${pciIds}";
       in
         pkgs.stdenv.mkDerivation {
           pname = "bellafetch";

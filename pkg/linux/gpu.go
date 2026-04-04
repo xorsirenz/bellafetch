@@ -8,7 +8,6 @@ import (
 )
 
 var CUSTOM_PCI_IDS_PATH = ""
-var CUSTOM_AMDGPU_IDS_PATH = ""
 
 func resolvePciIDsPath() string {
 	if p := os.Getenv("CUSTOM_PCI_IDS_PATH"); p != "" {
