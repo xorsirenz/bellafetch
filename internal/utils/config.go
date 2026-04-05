@@ -53,7 +53,7 @@ func LoadConfig() map[string]bool {
 func configDirExists() (string, error) {
 	configPath, err := getConfigPath()
 	if err != nil {
-		return "", fmt.Errorf("Error failed to find user config direcoty: %v", err
+		return "", fmt.Errorf("Error failed to find user config direcoty: %v", err)
 	}
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		createDefaultConfig(configPath)
