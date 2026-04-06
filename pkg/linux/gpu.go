@@ -27,17 +27,20 @@ func resolvePciIDsPath() (string, error) {
 		if _, err := os.Stat(miscPciFile); err == nil {
 			return miscPciFile, nil
 		} else if os.IsNotExist(err) {
-			return "", fmt.Errorf("Cannot find pci.ids file", err)
+			return "", fmt.Errorf("Cannot find pci.ids file %v", err)
 		}
 		return "", nil
 	}
 
-	return "/usr/share/hwdata/pci.ids", nil
+	return "", nil
 }
 
 func Gpu() string {
 	pciDir := "/sys/bus/pci/devices"
 	pciFile, err := resolvePciIDsPath()
+	if err != nil {
+		_ = fmt.Errorf("Error: %v", err)
+	}
 
 	pciContents, err := os.ReadFile(pciFile)
 	if err != nil {
