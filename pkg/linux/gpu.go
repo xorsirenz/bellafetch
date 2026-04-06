@@ -9,21 +9,35 @@ import (
 
 var CUSTOM_PCI_IDS_PATH = ""
 
-func resolvePciIDsPath() string {
+func resolvePciIDsPath() (string, error) {
+	hwdataPciFile := "/usr/share/hwdata/pci.ids"
+	miscPciFile := "/usr/share/misc/pci.ids"
+
 	if p := os.Getenv("CUSTOM_PCI_IDS_PATH"); p != "" {
-		return p
+		return p, nil
 	}
 
 	if CUSTOM_PCI_IDS_PATH != "" {
-		return CUSTOM_PCI_IDS_PATH
+		return CUSTOM_PCI_IDS_PATH, nil
 	}
 
-	return "/usr/share/hwdata/pci.ids"
+	if _, err := os.Stat(hwdataPciFile); err == nil {
+		return hwdataPciFile, nil
+	} else if os.IsNotExist(err) {
+		if _, err := os.Stat(miscPciFile); err == nil {
+			return miscPciFile, nil
+		} else if os.IsNotExist(err) {
+			return "", fmt.Errorf("Cannot find pci.ids file", err)
+		}
+		return "", nil
+	}
+
+	return "/usr/share/hwdata/pci.ids", nil
 }
 
 func Gpu() string {
 	pciDir := "/sys/bus/pci/devices"
-	pciFile := resolvePciIDsPath()
+	pciFile, err := resolvePciIDsPath()
 
 	pciContents, err := os.ReadFile(pciFile)
 	if err != nil {
