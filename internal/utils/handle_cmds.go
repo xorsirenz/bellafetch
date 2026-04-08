@@ -23,7 +23,7 @@ func HandleCmd(version string) {
 
 Operations:
 	bellafetch {-h -help}
-	bellafetch {-h -version}`)
+	bellafetch {-v -version}`)
 		os.Exit(0)
 	}
 }
