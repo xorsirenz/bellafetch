@@ -16,7 +16,7 @@ func GetLinuxData() utils.Data {
 		Packages:   PkgManager(osMap),
 		Shell:		Shell(),
 		Terminal:	Terminal(),
-		WM:         Wm(),
+		WM:         Desktop(),
 		Cpu:        Cpu(),
 		Gpu:        Gpu(),
 		DiskSpace:  DiskSpace(),

@@ -7,7 +7,17 @@ import (
 	"strings"
 )
 
-func Wm() string {
+func Desktop() string {
+	if de := os.Getenv("XDG_CURRENT_DESKTOP"); de != "" {
+		return strings.ToLower(de)
+	}
+	if wm := wm(); wm != "" {
+		return wm
+	}
+	return ""
+}
+
+func wm() string {
 	rootDir := "/proc"
 
 	supportedWms := []string{
