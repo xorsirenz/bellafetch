@@ -8,9 +8,9 @@ import (
 )
 func Host() string {
 	var host strings.Builder
-	host.WriteString(Hostname())
-	host.WriteString("@")
 	host.WriteString(Username())
+	host.WriteString("@")
+	host.WriteString(Hostname())
 
 	return host.String()
 }
