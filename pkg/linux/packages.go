@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 )
@@ -38,8 +39,9 @@ func PkgManager(osMap map[string]string) string {
 	case "void":
 		pkgs := xbps()
 		return fmt.Sprintf("%s %s", pkgs, flatpaks)
-	case "rhel":
-		return fmt.Sprintf("%s", flatpaks)
+	case "rhel", "fedora":
+		pkgs := rpm()
+		return fmt.Sprintf("%d %s", pkgs, flatpaks)
 	case "nixos":
 		pkgs := nixos()
 		return fmt.Sprintf("%s %s", pkgs, flatpaks)
@@ -97,6 +99,17 @@ func flatpakRuntimes() int {
 		}
 	}
 	return count
+}
+
+func rpm() int {
+	output, err := exec.Command("rpm", "-qa").Output()
+	if err != nil {
+		_ = fmt.Errorf("Error %v", err)
+	}
+	outStr := string(output)
+	packages := strings.Split(strings.TrimSpace(outStr), "\n")
+	pkg := len(packages)
+	return pkg
 }
 
 func nixos() string {
