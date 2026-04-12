@@ -41,7 +41,7 @@ func PkgManager(osMap map[string]string) string {
 		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	case "rhel", "fedora":
 		pkgs := rpm()
-		return fmt.Sprintf("%d %s", pkgs, flatpaks)
+		return fmt.Sprintf("%s %s", pkgs, flatpaks)
 	case "nixos":
 		pkgs := nixos()
 		return fmt.Sprintf("%s %s", pkgs, flatpaks)
@@ -101,7 +101,7 @@ func flatpakRuntimes() int {
 	return count
 }
 
-func rpm() int {
+func rpm() string  {
 	output, err := exec.Command("rpm", "-qa").Output()
 	if err != nil {
 		_ = fmt.Errorf("Error %v", err)
@@ -109,7 +109,7 @@ func rpm() int {
 	outStr := string(output)
 	packages := strings.Split(strings.TrimSpace(outStr), "\n")
 	pkg := len(packages)
-	return pkg
+	return fmt.Sprintf("%d (rpm)", pkg)
 }
 
 func nixos() string {
