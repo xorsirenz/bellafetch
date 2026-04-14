@@ -12,7 +12,7 @@ func ClearScreen() {
 func Banner() {
 	const banner = `
 	 bellafetch
-    [github : xorsirenz]
+    [github :: xorsirenz]
 	`
 
 	fmt.Println(banner)
