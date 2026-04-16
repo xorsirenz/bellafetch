@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	Ascii []Ascii `json:Ascii`
+	Ascii []Ascii `json:"Ascii"`
 	Modules []Modules `json:"Modules"`
 }
 
@@ -77,11 +77,10 @@ func getConfigPath() (string, error) {
 
 func createDefaultConfig(configPath string) error {
 	configDir := filepath.Dir(configPath)
+
 	configJson := Config{
 		Ascii : []Ascii{
-			{
-				Ascii: true,
-			},
+			{ Ascii: true },
 		},
 
 		Modules: []Modules{
