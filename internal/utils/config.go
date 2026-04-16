@@ -9,30 +9,11 @@ import (
 )
 
 type Config struct {
-	Ascii []Ascii `json:"Ascii"`
-	Modules []Modules `json:"Modules"`
+	Ascii string `json:"Ascii"`
+	Modules map[string]bool `json:"Modules"`
 }
 
-type Ascii struct {
-	Ascii bool `json:"Ascii"`
-}
-
-type Modules struct {
-	Host       bool `json:"Host"`
-	PrettyName bool `json:"PrettyName"`
-	Kernel     bool `json:"Kernel"`
-	Uptime     bool `json:"Uptime"`
-	Package    bool `json:"Packages"`
-	Shell      bool `json:"Shell"`
-	Terminal   bool `json:"Terminal"`
-	WM         bool `json:"WM"`
-	Cpu        bool `json:"Cpu"`
-	Gpu        bool `json:"Gpu"`
-	DiskSpace  bool `json:"DiskSpace"`
-	Memory     bool `json:"Memory"`
-}
-
-func LoadConfig() (map[string]bool, map[string]bool) {
+func LoadConfig() Config {
 	configFile, err := configDirExists()
 	if err != nil {
 		log.Fatalf("cannot load config: %v", err)
@@ -43,17 +24,13 @@ func LoadConfig() (map[string]bool, map[string]bool) {
 		log.Fatalf("cannot read config: %v", err)
 	}
 
-	var configData struct {
-		Ascii []map[string]bool `json:"Ascii"`
-		Modules []map[string]bool `json:"Modules"`
-	}
-
-	err = json.Unmarshal(file, &configData)
+	var config Config
+	err = json.Unmarshal(file, &config)
 	if err != nil {
 		log.Fatalf("Cannot unmarshal json: %v", err)
 	}
 
-	return configData.Modules[0], configData.Ascii[0]
+	return config
 }
 
 func configDirExists() (string, error) {
@@ -79,26 +56,20 @@ func createDefaultConfig(configPath string) error {
 	configDir := filepath.Dir(configPath)
 
 	configJson := Config{
-		Ascii : []Ascii{
-			{ Ascii: true },
-		},
-
-		Modules: []Modules{
-
-			{
-				Host:       true,
-				PrettyName: true,
-				Kernel:     true,
-				Uptime:     true,
-				Package:    true,
-				Shell:      true,
-				Terminal:   true,
-				WM:         true,
-				Cpu:        true,
-				Gpu:        true,
-				DiskSpace:  true,
-				Memory:     true,
-			},
+		Ascii: "none",
+		Modules: map[string]bool{
+			"Host":       true,
+			"PrettyName": true,
+			"Kernel":     true,
+			"Uptime":     true,
+			"Package":    true,
+			"Shell":      true,
+			"Terminal":   true,
+			"WM":         true,
+			"Cpu":        true,
+			"Gpu":        true,
+			"DiskSpace":  true,
+			"Memory":     true,
 		},
 	}
 
