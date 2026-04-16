@@ -17,7 +17,7 @@ func parseID(id string) string {
 	return id
 }
 
-func PkgManager(osMap map[string]string) string {
+func GetID(osMap map[string]string) string {
 	id := osMap["ID_LIKE"]
 
 	if id == "" {
@@ -26,9 +26,13 @@ func PkgManager(osMap map[string]string) string {
 	if len(id) > 1 {
 		id = parseID(id)
 	}
+	return id
+}
 
+func PkgManager(osMap map[string]string) string {
 	flatpaks := flatpak()
 
+	id := GetID(osMap)
 	switch id {
 	case "arch", "manjaro":
 		pkgs := pacman()
