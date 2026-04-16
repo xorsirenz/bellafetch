@@ -9,7 +9,12 @@ import (
 )
 
 type Config struct {
+	Ascii []Ascii `json:Ascii`
 	Modules []Modules `json:"Modules"`
+}
+
+type Ascii struct {
+	Ascii bool `json:"Ascii"`
 }
 
 type Modules struct {
@@ -27,7 +32,7 @@ type Modules struct {
 	Memory     bool `json:"Memory"`
 }
 
-func LoadConfig() map[string]bool {
+func LoadConfig() (map[string]bool, map[string]bool) {
 	configFile, err := configDirExists()
 	if err != nil {
 		log.Fatalf("cannot load config: %v", err)
@@ -39,6 +44,7 @@ func LoadConfig() map[string]bool {
 	}
 
 	var configData struct {
+		Ascii []map[string]bool `json:"Ascii"`
 		Modules []map[string]bool `json:"Modules"`
 	}
 
@@ -47,7 +53,7 @@ func LoadConfig() map[string]bool {
 		log.Fatalf("Cannot unmarshal json: %v", err)
 	}
 
-	return configData.Modules[0]
+	return configData.Modules[0], configData.Ascii[0]
 }
 
 func configDirExists() (string, error) {
@@ -72,6 +78,12 @@ func getConfigPath() (string, error) {
 func createDefaultConfig(configPath string) error {
 	configDir := filepath.Dir(configPath)
 	configJson := Config{
+		Ascii : []Ascii{
+			{
+				Ascii: true,
+			},
+		},
+
 		Modules: []Modules{
 
 			{
