@@ -7,15 +7,17 @@ import (
 func GetLinuxData() utils.Data {
 
 	osMap := OsRelease()
+	id := GetID(osMap)
 
 	return utils.Data{
-		Host:   	Host(),
+		Id:         id,
+		Host:       Host(),
 		PrettyName: osMap["PRETTY_NAME"],
 		Kernel:     Kernel(),
 		Uptime:     Uptime(),
-		Packages:   PkgManager(osMap),
-		Shell:		Shell(),
-		Terminal:	Terminal(),
+		Packages:   PkgManager(id),
+		Shell:      Shell(),
+		Terminal:   Terminal(),
 		WM:         Desktop(),
 		Cpu:        Cpu(),
 		Gpu:        Gpu(),
