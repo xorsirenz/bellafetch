@@ -43,12 +43,12 @@ func PrintSelectedModules(data interface{}, config map[string]bool) {
 		if config[moduleName] {
 			moduleValue := dataValue.Field(i).Interface()
 
-			ModuleLabel := moduleName
+			moduleLabel := moduleName
 			if ctx, ok := contextMap[moduleName]; ok {
-				ModuleLabel = ctx
+				moduleLabel = ctx
 			}
 
-			fmt.Printf("%s %v\n", ModuleLabel, moduleValue)
+			fmt.Printf("%s %v\n", moduleLabel, moduleValue)
 		}
 	}
 }
