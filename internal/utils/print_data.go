@@ -7,6 +7,13 @@ import (
 	"unicode"
 )
 
+func PrintData(ascii string, data interface{}, config Config) {
+	ClearScreen()
+	Banner()
+	selectedModules := BuildSelectedModules(data, config)
+	RenderAsciiWithSelectedModules(ascii, selectedModules)
+}
+
 func ClearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
@@ -20,7 +27,7 @@ func Banner() {
 	fmt.Println(banner)
 }
 
-func BuildSelectedModules(data interface{}, config map[string]bool) []string {
+func BuildSelectedModules(data interface{}, config Config) []string {
 	contextMap := map[string]string{
 		"Host":       "   host    ::",
 		"PrettyName": "   os      ::",
@@ -43,16 +50,19 @@ func BuildSelectedModules(data interface{}, config map[string]bool) []string {
 	for i := 0; i < dataValue.NumField(); i++ {
 		moduleName := dataType.Field(i).Name
 
-		if config[moduleName] {
-			moduleValue := dataValue.Field(i).Interface()
-
-			moduleLabel := moduleName
-			if ctx, ok := contextMap[moduleName]; ok {
-				moduleLabel = ctx
-			}
-
-			moduleLines = append(moduleLines, fmt.Sprintf("%s %v", moduleLabel, moduleValue))
+		if !config.Modules[moduleName] {
+			continue
 		}
+
+		moduleValue := dataValue.Field(i).Interface()
+
+		moduleLabel := moduleName
+		if ctx, ok := contextMap[moduleName]; ok {
+			moduleLabel = ctx
+		}
+
+		moduleLines = append(moduleLines,
+			fmt.Sprintf("%s %v", moduleLabel, moduleValue))
 	}
 	return moduleLines
 }
