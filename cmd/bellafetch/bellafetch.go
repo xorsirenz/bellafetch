@@ -14,11 +14,9 @@ func main() {
 		utils.HandleCmd(version)
 	}
 
-	config, _ := utils.LoadConfig()
+	config := utils.LoadConfig()
 	data := pkg.CheckOS()
+	ascii := utils.FetchAscii(data.Id, config)
 
-	utils.ClearScreen()
-	utils.Banner()
-	selectedModules := utils.BuildSelectedModules(data, config)
-	utils.RenderAsciiWithSelectedModules(utils.NoAscii(), selectedModules)
-} 
+	utils.PrintData(ascii, data, config)
+}
