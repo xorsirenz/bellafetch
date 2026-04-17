@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	Ascii string `json:"Ascii"`
+	Ascii   string          `json:"Ascii"`
 	Modules map[string]bool `json:"Modules"`
 }
 
@@ -62,7 +62,7 @@ func createDefaultConfig(configPath string) error {
 			"PrettyName": true,
 			"Kernel":     true,
 			"Uptime":     true,
-			"Package":    true,
+			"Packages":   true,
 			"Shell":      true,
 			"Terminal":   true,
 			"WM":         true,
