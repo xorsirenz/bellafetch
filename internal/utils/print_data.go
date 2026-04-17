@@ -9,7 +9,7 @@ import (
 
 func PrintData(ascii string, data interface{}, config Config) {
 	ClearScreen()
-	Banner()
+	PrintBanner()
 	selectedModules := BuildSelectedModules(data, config)
 	RenderAsciiWithSelectedModules(ascii, selectedModules)
 }
@@ -18,17 +18,36 @@ func ClearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
 
-func Banner() {
+func PrintBanner() {
 	const banner = `
 	 bellafetch
-    [github :: xorsirenz]
-	`
-
+    [github :: xorsirenz]`
 	fmt.Println(banner)
 }
 
 func BuildSelectedModules(data interface{}, config Config) []string {
-	contextMap := map[string]string{
+	contextMap := getContextMap()
+	dataValue := reflect.ValueOf(data)
+	dataType := reflect.TypeOf(data)
+
+	var moduleLines []string
+	for i := 0; i < dataValue.NumField(); i++ {
+		moduleName := dataType.Field(i).Name
+
+		if !config.Modules[moduleName] {
+			continue
+		}
+
+		moduleLabel := getModuleLabel(moduleName, contextMap)
+		moduleValue := dataValue.Field(i).Interface()
+
+		moduleLines = append(moduleLines, formatModule(moduleLabel, moduleValue))
+	}
+	return moduleLines
+}
+
+func getContextMap() map[string]string {
+	return map[string]string{
 		"Host":       "   host    ::",
 		"PrettyName": "   os      ::",
 		"Kernel":     "   ver     ::",
@@ -42,74 +61,78 @@ func BuildSelectedModules(data interface{}, config Config) []string {
 		"DiskSpace":  "   storage ::",
 		"Memory":     "  memory  ::",
 	}
+}
 
-	var moduleLines []string
-	dataValue := reflect.ValueOf(data)
-	dataType := reflect.TypeOf(data)
-
-	for i := 0; i < dataValue.NumField(); i++ {
-		moduleName := dataType.Field(i).Name
-
-		if !config.Modules[moduleName] {
-			continue
-		}
-
-		moduleValue := dataValue.Field(i).Interface()
-
-		moduleLabel := moduleName
-		if ctx, ok := contextMap[moduleName]; ok {
-			moduleLabel = ctx
-		}
-
-		moduleLines = append(moduleLines,
-			fmt.Sprintf("%s %v", moduleLabel, moduleValue))
+func getModuleLabel(moduleName string, contextMap map[string]string) string {
+	if ctx, ok := contextMap[moduleName]; ok {
+		return ctx
 	}
-	return moduleLines
+	return moduleName
+}
+
+func formatModule(label string, value interface{}) string {
+	return fmt.Sprintf("%s %v", label, value)
 }
 
 func RenderAsciiWithSelectedModules(ascii string, moduleLines []string) {
-	asciiLines := strings.Split(strings.Trim(ascii, "\n"), "\n")
+	asciiLines := prepareAsciiLines(ascii)
+	maxWidth := getMaxWidth(asciiLines)
 
+	asciiLen := len(asciiLines)
+	moduleLen := len(moduleLines)
+	offset := calculateOffset(asciiLen, moduleLen)
+
+	for i := 0; i < max(asciiLen, moduleLen); i++ {
+		asciiText := getAsciiText(i, asciiLines)
+		moduleText := getModuleText(i, moduleLines, offset)
+		printLine(asciiText, moduleText, maxWidth)
+	}
+}
+
+func prepareAsciiLines(ascii string) []string {
+	asciiLines := strings.Split(strings.Trim(ascii, "\n"), "\n")
 	for i := range asciiLines {
 		asciiLines[i] = strings.TrimRightFunc(asciiLines[i], unicode.IsSpace)
 	}
+	return asciiLines
+}
 
+func getMaxWidth(asciiLines []string) int {
 	maxWidth := 0
 	for _, line := range asciiLines {
 		if len(line) > maxWidth {
 			maxWidth = len(line)
 		}
 	}
+	return maxWidth
+}
 
-	asciiLen := len(asciiLines)
-	moduleLen := len(moduleLines)
-
-	offset := 0
+func calculateOffset(asciiLen, moduleLen int) int {
 	if asciiLen > moduleLen {
-		offset = (asciiLen - moduleLen) / 2
+		return (asciiLen - moduleLen) / 2
 	}
+	return 0
+}
 
-	asciiLenTotal := asciiLen
-	if moduleLen > asciiLenTotal {
-		asciiLenTotal = moduleLen
+func getAsciiText(index int, asciiLines []string) string {
+	if index < len(asciiLines) {
+		return asciiLines[index]
 	}
+	return ""
+}
 
-	for i := 0; i < asciiLenTotal; i++ {
-		var asciiText, moduleText string
-		if i < asciiLen {
-			asciiText = asciiLines[i]
-		}
-
-		textIndex := i - offset
-		if textIndex >= 0 && textIndex < moduleLen {
-			moduleText = moduleLines[textIndex]
-		}
-
-		padding := maxWidth - len(asciiText)
-		if padding < 0 {
-			padding = 0
-		}
-
-		fmt.Printf("%s%s%s\n", asciiText, strings.Repeat(" ", padding+1), moduleText)
+func getModuleText(index int, moduleLines []string, offset int) string {
+	textIndex := index - offset
+	if textIndex >= 0 && textIndex < len(moduleLines) {
+		return moduleLines[textIndex]
 	}
+	return ""
+}
+
+func printLine(asciiText, moduleText string, maxWidth int) {
+	padding := maxWidth - len(asciiText)
+	if padding < 0 {
+		padding = 0
+	}
+	fmt.Printf("%s%s%s\n", asciiText, strings.Repeat(" ", padding+1), moduleText)
 }
