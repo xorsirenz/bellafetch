@@ -35,21 +35,20 @@ $ sudo mv bellafetch /usr/local/bin
 #### Default Config:
  ```json
 {
-  "Modules": [
-    {
-      "Host": true,
-      "PrettyName": true,
-      "Kernel": true,
-      "Uptime": true,
-      "Packages": true,
-      "Shell": true,
-      "Terminal": true,
-      "WM": true,
-      "Cpu": true,
-      "Gpu": true,
-      "DiskSpace": true,
-      "Memory": true
-    }
-  ]
+  "Ascii": "none",
+  "Modules": {
+    "Cpu": true,
+    "DiskSpace": true,
+    "Gpu": true,
+    "Host": true,
+    "Kernel": true,
+    "Memory": true,
+    "Package": true,
+    "PrettyName": true,
+    "Shell": true,
+    "Terminal": true,
+    "Uptime": true,
+    "WM": true
+  }
 }
 ```
