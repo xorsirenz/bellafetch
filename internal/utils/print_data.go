@@ -8,24 +8,24 @@ import (
 )
 
 func PrintData(ascii string, data interface{}, config Config) {
-	ClearScreen()
-	PrintBanner()
-	selectedModules := BuildSelectedModules(data, config)
-	RenderAsciiWithSelectedModules(ascii, selectedModules)
+	clearScreen()
+	printBanner()
+	selectedModules := buildSelectedModules(data, config)
+	renderAsciiWithSelectedModules(ascii, selectedModules)
 }
 
-func ClearScreen() {
+func clearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
 
-func PrintBanner() {
+func printBanner() {
 	const banner = `
 	 bellafetch
     [github :: xorsirenz]`
 	fmt.Println(banner)
 }
 
-func BuildSelectedModules(data interface{}, config Config) []string {
+func buildSelectedModules(data interface{}, config Config) []string {
 	contextMap := getContextMap()
 	dataValue := reflect.ValueOf(data)
 	dataType := reflect.TypeOf(data)
@@ -74,7 +74,7 @@ func formatModule(label string, value interface{}) string {
 	return fmt.Sprintf("%s %v", label, value)
 }
 
-func RenderAsciiWithSelectedModules(ascii string, moduleLines []string) {
+func renderAsciiWithSelectedModules(ascii string, moduleLines []string) {
 	asciiLines := prepareAsciiLines(ascii)
 	maxWidth := getMaxWidth(asciiLines)
 
