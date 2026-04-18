@@ -56,13 +56,17 @@ $ sudo mv bellafetch /usr/local/bin
   }
 }
 ```
-### Custom ASCII art
-By default ASCII art is set to none/disabled. You can set it to default to match your ditro using default, 
-or to use an custom ASCII art of your choice, add a .txt file inside the directory 
+
+### ASCII Art
+#### Default ASCII art:
+By default ASCII art is set to none/disabled. You can set it to default to match your distro.
+Default will try and match your distros os-release "ID" or "ID_LIKE" value with a matching .txt filename in
+[internal/utils/ascii](https://github.com/xorsirenz/bellafetch/tree/main/internal/utils/ascii).
+
+#### Custom ASCII art:
+To use a custom ASCII art of your choice, add a .txt file inside the directory 
 [internal/utils/ascii](https://github.com/xorsirenz/bellafetch/tree/main/internal/utils/ascii), 
 then specify the name of the file the in Ascii section of your config.
-
-#### Custom ASCII:
 ```json
 {
     "Ascii": "custom",
