@@ -27,7 +27,11 @@ $ sudo mv bellafetch /usr/local/bin
  bellafetch
  ```
 ### Configuration
-#### Config location: 
+
+> [!IMPORTANT]
+> Currently, bellafetch does not impliment JSON validation via JSON schema, so it is very important to follow the pattern shown in the default configuration below.
+ 
+ Bellafetch will create a default config file in the location: 
  ```sh
  $ ~/.config/bellafetch/config
  ```
@@ -50,5 +54,18 @@ $ sudo mv bellafetch /usr/local/bin
     "Uptime": true,
     "WM": true
   }
+}
+```
+### Custom ASCII art
+By default ASCII art is set to none/disabled. You can set it to default to match your ditro using default, 
+or to use an custom ASCII art of your choice, add a .txt file inside the directory 
+[internal/utils/ascii](https://github.com/xorsirenz/bellafetch/tree/main/internal/utils/ascii), 
+then specify the name of the file the in Ascii section of your config.
+
+#### Custom ASCII:
+```json
+{
+    "Ascii": "custom",
+    ...
 }
 ```
