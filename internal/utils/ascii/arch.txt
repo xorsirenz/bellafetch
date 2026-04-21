@@ -1,19 +1,19 @@
-                  -`
-                 .o+`
-                `ooo/
-               `+oooo:
-              `+oooooo:
-              -+oooooo+:
-            `/:-:++oooo+:
-           `/++++/+++++++:
-          `/++++++++++++++:
-         `/+++ooooooooooooo/`
-        ./ooosssso++osssssso+`
-       .oossssso-````/ossssss+`
-      -osssssso.      :ssssssso.
-     :osssssss/        osssso+++.
-    /ossssssss/        +ssssooo/-
-  `/ossssso+/:-        -:/+osssso+-
- `+sso+:-`                 `.-/+oso:
-`++:.                           `-/+/
-.`                                 `/
+[34m                  -`[0m
+[34m                  .o+`[0m
+[34m                 `ooo/[0m
+[34m                `+oooo:[0m
+[34m               `+oooooo:[0m
+[34m               -+oooooo+:[0m
+[34m             `/:-:++oooo+:[0m
+[34m            `/++++/+++++++:[0m
+[34m           `/++++++++++++++:[0m
+[34m          `/+++ooooooooooooo/`[0m
+[34m         ./ooosssso++osssssso+`[0m
+[34m        .oossssso-````/ossssss+`[0m
+[34m       -osssssso.      :ssssssso.[0m
+[34m      :osssssss/        osssso+++.[0m
+[34m     /ossssssss/        +ssssooo/-[0m
+[34m   `/ossssso+/:-        -:/+osssso+-[0m
+[34m  `+sso+:-`                 `.-/+oso:[0m
+[34m `++:.                           `-/+/[0m
+[34m .`                                 `/[0m
