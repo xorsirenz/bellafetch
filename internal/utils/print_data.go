@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"reflect"
+	"regexp"
 	"strings"
 	"unicode"
 )
@@ -109,10 +110,17 @@ func getMaxWidth(asciiLines []string) int {
 	return maxWidth
 }
 
+func stripANSI(asciiString string) string {
+	var ansiRegex = regexp.MustCompile(`\x1b\[[0-9;]*m`)
+
+	return ansiRegex.ReplaceAllString(asciiString, "")
+} 
+
 func displayWidth(asciiString string) int {
+	asciiStr := stripANSI(asciiString)
 	width := 0
 
-	for _, r := range asciiString {
+	for _, r := range asciiStr {
 		if r <= 127 {
 			width++
 			continue
@@ -142,12 +150,19 @@ func displayWidth(asciiString string) int {
 	return width
 }
 
+func padRight(asciiString string, targetWidth int) string {
+	currentWidth := displayWidth(asciiString)
+	if currentWidth >= targetWidth {
+		return asciiString
+	}
+	return asciiString + strings.Repeat(" ", targetWidth-currentWidth)
+}
+
 func printLine(asciiText, rightText string, maxWidth int) {
 	const gap = 2
 
-	fmt.Printf("%-*s%s%s\n", 
-		maxWidth,
-		asciiText,
+	fmt.Printf("%s%s%s\n", 
+		padRight(asciiText, maxWidth),
 		strings.Repeat(" ", gap),
 		rightText,
 	)
