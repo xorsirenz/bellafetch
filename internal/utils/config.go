@@ -39,7 +39,9 @@ func configDirExists() (string, error) {
 		return "", fmt.Errorf("Error failed to find user config direcoty: %v", err)
 	}
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		createDefaultConfig(configPath)
+		if err := createDefaultConfig(configPath); err != nil {
+			return "", err
+		}
 	}
 	return configPath, err
 }
