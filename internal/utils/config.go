@@ -43,7 +43,7 @@ func configDirExists() (string, error) {
 			return "", err
 		}
 	}
-	return configPath, err
+	return configPath, nil
 }
 
 func getConfigPath() (string, error) {
