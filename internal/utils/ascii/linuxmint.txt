@@ -1,0 +1,19 @@
+[37m             ...-:::::-...[0m
+[37m          .-MMMMMMMMMMMMMMM-.[0m
+[37m      .-MMMM[32m`..-:::::::-..`[37mMMMM-.[0m
+[37m    .:MMMM[32m.:MMMMMMMMMMMMMMM:.[37mMMMM:.[0m
+[37m   -MMM[32m-M---MMMMMMMMMMMMMMMMMMM.[37mMMM-[0m
+[37m  :MMM[32m:MM`  :MMMM:....::-...-MMMM:[37mMMM:[0m
+[37m :MMM[32m:MMM`  :MM:`  ``    ``  `:MMM:[37mMMM:[0m
+[37m.MMM[32m.MMMM`  :MM.  -MM.  .MM-  `MMMM.[37mMMM.[0m
+[37m:MMM[32m:MMMM`  :MM.  -MM-  .MM:  `MMMM-[37mMMM:[0m
+[37m:MMM[32m:MMMM`  :MM.  -MM-  .MM:  `MMMM:[37mMMM:[0m
+[37m:MMM[32m:MMMM`  :MM.  -MM-  .MM:  `MMMM-[37mMMM:[0m
+[37m.MMM[32m.MMMM`  :MM:--:MM:--:MM:  `MMMM.[37mMMM.[0m
+[37m :MMM[32m:MMM-  `-MMMMMMMMMMMM-`  -MMM-[37mMMM:[0m
+[37m  :MMM[32m:MMM:`                `:MMM:[37mMMM:[0m
+[37m   .MMM[32m.MMMM:--------------:MMMM.[37mMMM.[0m
+[37m     '-MMMM[32m.-MMMMMMMMMMMMMMM-.[37mMMMM-'[0m
+[37m       '.-MMMM[32m``--:::::--``[37mMMMM-.'[0m
+[37m            '-MMMMMMMMMMMMM-'[0m
+[37m               ``-:::::-``[0m
