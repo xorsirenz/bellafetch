@@ -16,7 +16,7 @@ func main() {
 
 	config := utils.LoadConfig()
 	data := pkg.CheckOS()
-	ascii := utils.FetchAscii(data.Id, config)
+	ascii := utils.FetchAscii(data, config)
 
 	utils.PrintData(ascii, data, config)
 }

@@ -13,7 +13,8 @@ var asciiFS embed.FS
 var asciiCache = map[string]string{}
 var cacheOnce sync.Once
 
-func FetchAscii(id string, config Config) string {
+func FetchAscii(data Data, config Config) string {
+	id := data.Id
 	asciiMode := strings.ToLower(config.Ascii)
 	id = strings.ToLower(id)
 	loadAsciiFiles()
