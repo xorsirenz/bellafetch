@@ -13,13 +13,19 @@ func parseID(id string) string {
 }
 
 func GetID(osMap map[string]string) string {
-	id := osMap["ID_LIKE"]
+	id := osMap["ID"]
 
-	if id == "" {
-		id = osMap["ID"]
-	}
 	if len(id) > 1 {
 		id = parseID(id)
 	}
 	return id
+}
+
+func GetIDLike(osMap map[string]string) string {
+	idLike := osMap["ID_LIKE"]
+
+	if idLike == "" {
+		idLike = GetID(osMap)
+	}
+	return idLike
 }
