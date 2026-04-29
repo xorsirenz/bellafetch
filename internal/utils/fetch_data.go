@@ -1,7 +1,8 @@
 package utils
 
 type Data struct {
-	Id	       string
+	Id         string
+	IdLike     string
 	Host       string
 	PrettyName string
 	Kernel     string

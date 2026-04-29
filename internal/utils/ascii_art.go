@@ -14,7 +14,11 @@ var asciiCache = map[string]string{}
 var cacheOnce sync.Once
 
 func FetchAscii(data Data, config Config) string {
-	id := data.Id
+	id := data.IdLike
+	if id == "" {
+		id = data.Id
+	}
+
 	asciiMode := strings.ToLower(config.Ascii)
 	id = strings.ToLower(id)
 	loadAsciiFiles()

@@ -11,6 +11,7 @@ func GetLinuxData() utils.Data {
 
 	return utils.Data{
 		Id:         id,
+		IdLike:		osMap["ID_LIKE"],
 		Host:       Host(),
 		PrettyName: osMap["PRETTY_NAME"],
 		Kernel:     Kernel(),
