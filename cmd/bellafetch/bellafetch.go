@@ -17,6 +17,7 @@ func main() {
 	config := utils.LoadConfig()
 	data := pkg.CheckOS()
 	ascii := utils.FetchAscii(data, config)
+	colorBlock := utils.FetchColorBlock(config)
 
-	utils.PrintData(ascii, data, config)
+	utils.PrintData(ascii, data, config, colorBlock)
 }
