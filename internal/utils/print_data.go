@@ -8,7 +8,7 @@ import (
 	"unicode"
 )
 
-func PrintData(ascii string, data interface{}, config Config) {
+func PrintData(ascii string, data interface{}, config Config, colorBlocks []string) {
 	banner := []string{
 		"         bellafetch",
 		"    [github :: xorsirenz]",
@@ -16,7 +16,7 @@ func PrintData(ascii string, data interface{}, config Config) {
 
 	clearScreen()
 	selectedModules := buildSelectedModules(data, config)
-	renderLayout(ascii, selectedModules, banner)
+	renderLayout(ascii, selectedModules, banner, colorBlocks)
 }
 
 func clearScreen() {
@@ -62,11 +62,14 @@ func buildSelectedModules(data interface{}, config Config) []string {
 	return moduleLines
 }
 
-func renderLayout(ascii string, moduleLines []string, banner []string) {
+
+func renderLayout(ascii string, moduleLines []string, banner []string, colorBlocks []string) {
 	asciiLines := prepareAscii(ascii)
 	maxWidth := getMaxWidth(asciiLines)
 
 	rightColumn := append(banner, moduleLines...)
+	rightColumn = append(rightColumn, "")
+	rightColumn = append(rightColumn, colorBlocks...)
 
 	asciiLen := len(asciiLines)
 	columnLen := len(rightColumn)
