@@ -16,7 +16,7 @@ func GetLinuxData() utils.Data {
 		PrettyName: osMap["PRETTY_NAME"],
 		Kernel:     Kernel(),
 		Uptime:     Uptime(),
-		Packages:   PkgManager(id),
+		Packages:   PkgManager(GetIDLike(osMap)),
 		Shell:      Shell(),
 		Terminal:   Terminal(),
 		WM:         Desktop(),
