@@ -9,8 +9,9 @@ import (
 )
 
 type Config struct {
-	Ascii   string          `json:"Ascii"`
-	Modules map[string]bool `json:"Modules"`
+	Ascii       string          `json:"Ascii"`
+	Modules     map[string]bool `json:"Modules"`
+	ColorBlocks bool            `json:"ColorBlocks"`
 }
 
 func LoadConfig() Config {
@@ -73,6 +74,7 @@ func createDefaultConfig(configPath string) error {
 			"DiskSpace":  true,
 			"Memory":     true,
 		},
+		ColorBlocks: true,
 	}
 
 	if err := os.MkdirAll(configDir, 0755); err != nil {
