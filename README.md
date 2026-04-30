@@ -53,7 +53,8 @@ $ sudo mv bellafetch /usr/local/bin
     "Terminal": true,
     "Uptime": true,
     "WM": true
-  }
+  },
+  "ColorBlocks": true
 }
 ```
 
