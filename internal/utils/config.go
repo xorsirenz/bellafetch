@@ -9,6 +9,7 @@ import (
 )
 
 type Config struct {
+	Banner      bool            `json:"Banner"`
 	Ascii       string          `json:"Ascii"`
 	Modules     map[string]bool `json:"Modules"`
 	ColorBlocks bool            `json:"ColorBlocks"`
@@ -59,7 +60,8 @@ func createDefaultConfig(configPath string) error {
 	configDir := filepath.Dir(configPath)
 
 	configJson := Config{
-		Ascii: "none",
+		Banner: true,
+		Ascii:  "none",
 		Modules: map[string]bool{
 			"Host":       true,
 			"PrettyName": true,

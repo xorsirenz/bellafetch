@@ -9,11 +9,7 @@ import (
 )
 
 func PrintData(ascii string, data interface{}, config Config, colorBlocks []string) {
-	banner := []string{
-		"         bellafetch",
-		"    [github :: xorsirenz]",
-	}
-
+	banner := getBanner(config)
 	clearScreen()
 	selectedModules := buildSelectedModules(data, config)
 	renderLayout(ascii, selectedModules, banner, colorBlocks)
@@ -21,6 +17,17 @@ func PrintData(ascii string, data interface{}, config Config, colorBlocks []stri
 
 func clearScreen() {
 	fmt.Print("\033[H\033[2J")
+}
+
+func getBanner(config Config) []string {
+	if config.Banner == false {
+		return nil
+	}
+	var banner = []string{
+		"         bellafetch",
+		"    [github :: xorsirenz]",
+	}
+	return banner
 }
 
 func buildSelectedModules(data interface{}, config Config) []string {

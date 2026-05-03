@@ -39,6 +39,7 @@ $ sudo mv bellafetch /usr/local/bin
 #### Default Config:
  ```json
 {
+  "Banner": true,  
   "Ascii": "none",
   "Modules": {
     "Cpu": true,
