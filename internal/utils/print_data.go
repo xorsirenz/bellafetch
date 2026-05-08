@@ -77,6 +77,7 @@ func renderLayout(ascii string, moduleLines []string, banner []string, colorBloc
 	rightColumn := append(banner, moduleLines...)
 	rightColumn = append(rightColumn, "")
 	rightColumn = append(rightColumn, colorBlocks...)
+	rightColumn = append(rightColumn, "")
 
 	asciiLen := len(asciiLines)
 	columnLen := len(rightColumn)
