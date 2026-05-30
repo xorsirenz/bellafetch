@@ -90,5 +90,5 @@ func createDefaultConfig(configPath string) error {
 	if err := os.WriteFile(configPath, defaultConfigData, 0644); err != nil {
 		return fmt.Errorf("Failed to write default config file: %w", err)
 	}
-	return err
+	return nil
 }
