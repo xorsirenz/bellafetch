@@ -38,7 +38,7 @@ func LoadConfig() Config {
 func configDirExists() (string, error) {
 	configPath, err := getConfigPath()
 	if err != nil {
-		return "", fmt.Errorf("Error failed to find user config direcoty: %v", err)
+		return "", fmt.Errorf("Failed to find user config direcoty: %v", err)
 	}
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		if err := createDefaultConfig(configPath); err != nil {
@@ -87,6 +87,7 @@ func createDefaultConfig(configPath string) error {
 	if err != nil {
 		return fmt.Errorf("Failed to Marshal config file: %w", err)
 	}
+
 	if err := os.WriteFile(configPath, defaultConfigData, 0644); err != nil {
 		return fmt.Errorf("Failed to write default config file: %w", err)
 	}
