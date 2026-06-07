@@ -8,9 +8,18 @@ import (
 )
 
 func Desktop() string {
-	if de := os.Getenv("XDG_CURRENT_DESKTOP"); de != "" {
-		return strings.ToLower(de)
+	envVars := []string{
+		"XDG_CURRENT_DESKTOP",
+		"XDG_SESSION_DESKTOP",
+		"DESKTOP_SESSION",
 	}
+
+	for _, v := range envVars {
+		if de := os.Getenv(v); de != "" {
+			return strings.ToLower(de)
+		}
+	}
+	
 	if wm := wm(); wm != "" {
 		return wm
 	}
