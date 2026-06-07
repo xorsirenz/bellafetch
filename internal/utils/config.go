@@ -1,18 +1,19 @@
 package utils
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
+
+	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
-	Banner      bool            `json:"Banner"`
-	Ascii       string          `json:"Ascii"`
-	Modules     map[string]bool `json:"Modules"`
-	ColorBlocks bool            `json:"ColorBlocks"`
+	Banner      bool            `yaml:"Banner"`
+	Ascii       string          `yaml:"Ascii"`
+	Modules     map[string]bool `yaml:"Modules"`
+	ColorBlocks bool            `yaml:"ColorBlocks"`
 }
 
 func LoadConfig() Config {
@@ -27,9 +28,8 @@ func LoadConfig() Config {
 	}
 
 	var config Config
-	err = json.Unmarshal(file, &config)
-	if err != nil {
-		log.Fatalf("Cannot unmarshal json: %v", err)
+	if err := yaml.Unmarshal(file, &config); err != nil {
+		log.Fatalf("Cannot unmarshal yaml: %v", err)
 	}
 
 	return config
@@ -40,6 +40,7 @@ func configDirExists() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("Failed to find user config direcoty: %v", err)
 	}
+
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		if err := createDefaultConfig(configPath); err != nil {
 			return "", err
@@ -53,13 +54,13 @@ func getConfigPath() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("Failed to find user config directory: %w", err)
 	}
-	return filepath.Join(userConfigDir, "bellafetch", "config"), err
+	return filepath.Join(userConfigDir, "bellafetch", "config.yaml"), nil
 }
 
 func createDefaultConfig(configPath string) error {
 	configDir := filepath.Dir(configPath)
 
-	configJson := Config{
+	configYaml := Config{
 		Banner: true,
 		Ascii:  "none",
 		Modules: map[string]bool{
@@ -83,9 +84,9 @@ func createDefaultConfig(configPath string) error {
 		return fmt.Errorf("Failed to create config directory: %w", err)
 	}
 
-	defaultConfigData, err := json.MarshalIndent(configJson, "", "  ")
+	defaultConfigData, err := yaml.Marshal(&configYaml)
 	if err != nil {
-		return fmt.Errorf("Failed to Marshal config file: %w", err)
+		return fmt.Errorf("Failed to marshal config file: %w", err)
 	}
 
 	if err := os.WriteFile(configPath, defaultConfigData, 0644); err != nil {
