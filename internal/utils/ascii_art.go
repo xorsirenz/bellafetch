@@ -3,6 +3,7 @@ package utils
 import (
 	"embed"
 	"io/fs"
+	"path/filepath"
 	"strings"
 	"sync"
 )
@@ -19,7 +20,7 @@ func FetchAscii(data Data, config Config) string {
 		id = data.IdLike
 	}
 
-	asciiMode := strings.ToLower(config.Ascii)
+	asciiMode := strings.ToLower(strings.TrimSuffix(config.Ascii, filepath.Ext(config.Ascii)))
 	id = strings.ToLower(id)
 	loadAsciiFiles()
 
