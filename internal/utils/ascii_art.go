@@ -3,6 +3,7 @@ package utils
 import (
 	"embed"
 	"io/fs"
+	"os"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -32,6 +33,14 @@ func FetchAscii(data Data, config Config) string {
 		if file, ok := asciiCache[asciiMode]; ok {
 			return loadAscii(file)
 		}
+
+		if home, err := os.UserHomeDir(); err == nil {
+			userFile := filepath.Join(home, ".config", "bellafetch", asciiMode+".txt")
+			if data, err := os.ReadFile(userFile); err == nil {
+				return string(data)
+			}
+		}
+
 		return loadAscii("none.txt")
 	}
 
