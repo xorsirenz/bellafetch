@@ -29,7 +29,7 @@ $ sudo mv bellafetch /usr/local/bin
 ### Configuration
 
 > [!IMPORTANT]
-> Currently, bellafetch does not impliment JSON validation via JSON schema, so it is very important to follow the pattern shown in the default configuration below.
+> Currently, bellafetch does not impliment YAML validation via YAML schema, so it is very important to follow the pattern shown in the default configuration below.
  
  Bellafetch will create a default config file in the location: 
  ```sh
