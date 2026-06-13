@@ -38,14 +38,19 @@ func LoadConfig() Config {
 func configDirExists() (string, error) {
 	configPath, err := getConfigPath()
 	if err != nil {
-		return "", fmt.Errorf("Failed to find user config direcoty: %v", err)
+		return "", fmt.Errorf("Failed to find user config directory: %w", err)
 	}
 
-	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		if err := createDefaultConfig(configPath); err != nil {
-			return "", err
+	if _, err := os.Stat(configPath); err != nil {
+		if os.IsNotExist(err) {
+			if err := createDefaultConfig(configPath); err != nil {
+				return "", err
+			}
+		} else {
+			return "", fmt.Errorf("failed to find user config file: %w", err)
 		}
 	}
+
 	return configPath, nil
 }
 
