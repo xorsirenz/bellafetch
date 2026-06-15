@@ -5,7 +5,7 @@ import (
 )
 
 func FetchColorBlock(config Config) []string {
-	if config.ColorBlocks == false {
+	if !config.ColorBlocks {
 		return nil
 	}
 	var lines []string
