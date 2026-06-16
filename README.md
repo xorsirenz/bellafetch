@@ -63,9 +63,8 @@ By default ASCII art is set to `none` / `disabled`. You can set it to `default` 
 [internal/utils/ascii](https://github.com/xorsirenz/bellafetch/tree/main/internal/utils/ascii).
 
 #### Custom ASCII art:
-To use a custom ASCII art of your choice, add a .txt file inside `$HOME/.config/bellafetch` or the directory 
-[internal/utils/ascii](https://github.com/xorsirenz/bellafetch/tree/main/internal/utils/ascii), 
-then specify the name of the file the in Ascii section of your config.
+To use a custom ASCII art of your choice, add a .txt file inside either the directory 
+[internal/utils/ascii](https://github.com/xorsirenz/bellafetch/tree/main/internal/utils/ascii) prior to building the binary, or simply add a file inside your `$HOME/.config/bellafetch` directory, then specify the name of the file the in Ascii section of your config.
 ```yaml
 Ascii: custom-file-name
     ...
