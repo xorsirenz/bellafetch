@@ -24,8 +24,8 @@ $ sudo mv bellafetch /usr/local/bin
  ```
 ## Usage
  ```sh
- bellafetch
- ```
+$ bellafetch 
+```
 ### Configuration
 
 > [!IMPORTANT]
