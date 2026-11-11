@@ -33,6 +33,7 @@ func wm() string {
 		"i3",
 		"awesome",
 		"bspwn",
+		"dwl",
 		"dwm",
 		"hyprland",
 		"niri",
