@@ -42,9 +42,7 @@ func Uptime() string {
 		units = append(units, fmt.Sprintf("%02dh", hours))
 	}
 
-	if minutes > 0 {
-		units = append(units, fmt.Sprintf("%dm", minutes))
-	}
+	units = append(units, fmt.Sprintf("%dm", minutes))
 
 	return strings.Join(units, " ")
 }
